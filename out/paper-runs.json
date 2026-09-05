@@ -1,0 +1,33 @@
+{
+  "$comment": "Runs cited in the paper. summarize.mjs and verify-paper.mjs use these files instead of the newest ones. Evaluated revision tctc-mcp f36c656.",
+  "runs": {
+    "latency": {
+      "local": "latency.local.2026-09-03T08-00-20-017Z.jsonl",
+      "testnet": "latency.testnet.2026-09-03T09-40-14-126Z.jsonl"
+    },
+    "revocation": {
+      "local": "revocation.local.2026-09-03T08-00-30-428Z.jsonl",
+      "testnet": "revocation.testnet.2026-09-03T09-52-01-575Z.jsonl"
+    },
+    "admin-cost": {
+      "local": "admin-cost.local.2026-09-03T08-00-19-684Z.jsonl",
+      "testnet": "admin-cost.testnet.2026-09-03T09-34-10-118Z.jsonl"
+    },
+    "faults": {
+      "local": "faults.local.2026-09-03T10-41-49-846Z.jsonl",
+      "testnet": "faults.testnet.2026-09-03T10-41-39-791Z.jsonl"
+    },
+    "rq1": {
+      "local": "rq1.local.2026-09-03T08-46-33-120Z.jsonl",
+      "testnet": "rq1.testnet.2026-09-03T10-17-04-301Z.jsonl"
+    },
+    "rq1-web": {
+      "local": "rq1-web.local.2026-09-03T09-37-06-635Z.jsonl",
+      "testnet": "rq1-web.testnet.2026-09-03T10-43-04-445Z.jsonl"
+    },
+    "case-study": {
+      "local": "case-study.local.2026-09-03T22-55-57-769Z.jsonl",
+      "local-haiku": "case-study.local-haiku.2026-09-03T23-17-28-067Z.jsonl"
+    }
+  }
+}

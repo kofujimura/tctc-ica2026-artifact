@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "ts": "2026-09-03T09:34:05.445Z",
+    "node": "v22.16.0",
+    "platform": "darwin-arm64",
+    "tctcMcpCommit": "f36c656e5a86e451f5bc80547fd6d73aaf1730af",
+    "tctcMcpUncommitted": [],
+    "label": "testnet",
+    "rpcUrl": "https://eth-sepolia.g.alchemy.com/v2/***",
+    "chainId": 11155111
+  },
+  "issuer": "0x31F8FDf2BA077c0f39852b6daAE028a5A7475d03",
+  "subject": "0xFbcec7A317Eb21034215D1c90eCce11762311bf9",
+  "subject2": "0xc329940e8Cd3b8C2501D55a95d58dE366F744833",
+  "controlTokens": [
+    "0xeac755ea39764067b79cff53e7e2a47810432efd",
+    "0x4e6dfc008b36f3ca913ac71ff1be38f7d51dafc1",
+    "0x424d931f0e12df050f782fe023b81e7e678dfb84",
+    "0x78ad2aac825a7385822d2f8518dd3ba08fff6a0f"
+  ],
+  "expiringControlToken": "0x065d31255fa6654b4a1085d4633ace65c248f81f",
+  "targets": {
+    "bindings1": "0x4413b48d83369a4dd59a0d0902152643a10e1f59",
+    "bindings2": "0xfaddeb5dd108a6d8473fd95c2107a3645ae3a606",
+    "bindings4": "0x2ff8754886e19ba23379e3804634ab5d90e33f61",
+    "expiring": "0x7d1a4b2c5b7a77919fb346334eb9659b7aaa98ee"
+  },
+  "rbacTarget": "0x0a566a048b7eac91ff314521064aed34eb073885",
+  "gas": {
+    "deploy.AgentControlTokens0": 1331869,
+    "deploy.AgentControlTokens1": 1331869,
+    "deploy.AgentControlTokens2": 1331869,
+    "deploy.AgentControlTokens3": 1331869,
+    "deploy.BenchTarget1": 1455012,
+    "deploy.BenchTarget2": 1505903,
+    "deploy.BenchTarget4": 1607709,
+    "deploy.ExpiringControlTokens": 1463615,
+    "deploy.RbacTarget": 345247,
+    "mint.first": 52681,
+    "mint.first.subject2": 52681
+  },
+  "keysFromEnv": true
+}

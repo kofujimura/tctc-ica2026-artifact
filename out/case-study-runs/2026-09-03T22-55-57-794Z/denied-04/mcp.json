@@ -1,0 +1,56 @@
+{
+  "mcpServers": {
+    "fs": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/../gate/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/denied-04/gate-fs.json"
+      ]
+    },
+    "memory": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/../gate/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/denied-04/gate-memory.json"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/denied-04/memory.jsonl"
+      }
+    },
+    "api": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/lib/agent-tools/api-client.mjs"
+      ],
+      "env": {
+        "WEB_API_URL": "http://127.0.0.1:64668",
+        "AGENT_PRIVATE_KEY": "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",
+        "CHAIN_ID": "31337"
+      }
+    },
+    "chain": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/lib/agent-tools/chain-client.mjs"
+      ],
+      "env": {
+        "RPC": "http://127.0.0.1:8548",
+        "CHAIN_ID": "31337",
+        "RECORD_TARGET": "0x8a791620dd6260079bf849dc5567adc3f2fdc318",
+        "AGENT_PRIVATE_KEY": "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",
+        "LOG_FILE": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/denied-04/chain.jsonl"
+      }
+    },
+    "tctc": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/denied-04/tctc.json",
+        "--no-cache"
+      ]
+    }
+  }
+}

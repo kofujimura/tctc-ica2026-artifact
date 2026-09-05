@@ -1,0 +1,2 @@
+{"type":"entity","name":"Orbit Scheduler","entityType":"Project","observations":["Small library for planning recurring jobs with jitter and back-off","Maintained by the scheduling team","Currently at version 2.4.0"]}
+{"type":"entity","name":"Orbit Scheduler v2.4.0","entityType":"Release","observations":["Added calendar-aware scheduling (business days, holidays)","Exponential back-off capped at 30 seconds","Dropped Node 16 support","Fixed jitter bug that could schedule jobs in the past"]}

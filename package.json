@@ -1,0 +1,27 @@
+{
+  "name": "tctc-experiments",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Reproducible evaluation harness for the TCTC / ERC-7303 paper (latency, revocation, expiry, fault injection).",
+  "type": "module",
+  "scripts": {
+    "compile": "hardhat compile",
+    "node": "hardhat node --port 8545",
+    "deploy:local": "node scripts/deploy.mjs --rpc http://127.0.0.1:8545 --chain-id 31337 --out out/fixtures.local.json",
+    "bench:latency": "node bench/latency.mjs --fixtures out/fixtures.local.json",
+    "bench:revocation": "node bench/revocation.mjs --fixtures out/fixtures.local.json",
+    "bench:faults": "node bench/faults.mjs --fixtures out/fixtures.local.json",
+    "summarize": "node summarize.mjs",
+    "all:local": "node run-all.mjs"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.1.0",
+    "viem": "^2.34.0"
+  },
+  "devDependencies": {
+    "hardhat": "^2.26.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

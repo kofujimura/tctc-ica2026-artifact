@@ -1,0 +1,56 @@
+{
+  "mcpServers": {
+    "fs": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/../gate/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T23-17-28-091Z/expiry-01/gate-fs.json"
+      ]
+    },
+    "memory": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/../gate/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T23-17-28-091Z/expiry-01/gate-memory.json"
+      ],
+      "env": {
+        "MEMORY_FILE_PATH": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T23-17-28-091Z/expiry-01/memory.jsonl"
+      }
+    },
+    "api": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/lib/agent-tools/api-client.mjs"
+      ],
+      "env": {
+        "WEB_API_URL": "http://127.0.0.1:49928",
+        "AGENT_PRIVATE_KEY": "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",
+        "CHAIN_ID": "31337"
+      }
+    },
+    "chain": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/lib/agent-tools/chain-client.mjs"
+      ],
+      "env": {
+        "RPC": "http://127.0.0.1:8549",
+        "CHAIN_ID": "31337",
+        "RECORD_TARGET": "0x610178da211fef7d417bc0e6fed39f05609ad788",
+        "AGENT_PRIVATE_KEY": "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d",
+        "LOG_FILE": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T23-17-28-091Z/expiry-01/chain.jsonl"
+      }
+    },
+    "tctc": {
+      "command": "/Users/fujimura/.nvm/versions/node/v22.16.0/bin/node",
+      "args": [
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/dist/index.js",
+        "--config",
+        "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T23-17-28-091Z/expiry-01/tctc.json",
+        "--no-cache"
+      ]
+    }
+  }
+}

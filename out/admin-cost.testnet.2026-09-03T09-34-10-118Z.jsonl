@@ -1,0 +1,26 @@
+{"type":"meta","kind":"admin-cost","label":"testnet","ts":"2026-09-03T09:34:10.147Z","node":"v22.16.0","platform":"darwin-arm64","tctcMcpCommit":"f36c656e5a86e451f5bc80547fd6d73aaf1730af","tctcMcpUncommitted":[],"fixtures":"out/fixtures.testnet.json","rpcUrl":"https://eth-sepolia.g.alchemy.com/v2/***","chainId":11155111}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"grantRole","gasUsed":51477,"i":0}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"act (local mapping)","gasUsed":28738,"i":0}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"revokeRole","gasUsed":29491,"i":0}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"mint (grant)","gasUsed":52681,"i":0}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"burnByIssuer (revoke)","gasUsed":28178,"i":0}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"grantRole","gasUsed":51477,"i":1}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"act (local mapping)","gasUsed":28738,"i":1}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"revokeRole","gasUsed":29491,"i":1}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"mint (grant)","gasUsed":52681,"i":1}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"burnByIssuer (revoke)","gasUsed":28178,"i":1}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"grantRole","gasUsed":51477,"i":2}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"act (local mapping)","gasUsed":28738,"i":2}
+{"type":"gas","label":"testnet","scheme":"rbac","op":"revokeRole","gasUsed":29491,"i":2}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"mint (grant)","gasUsed":52681,"i":2}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"burnByIssuer (revoke)","gasUsed":28178,"i":2}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"act, 1 binding(s), first held","gasUsed":41274,"bindings":1,"position":"first"}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"act, 2 binding(s), first held","gasUsed":45701,"bindings":2,"position":"first"}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"act, 4 binding(s), first held","gasUsed":54555,"bindings":4,"position":"first"}
+{"type":"gas","label":"testnet","scheme":"externalized","op":"act, 4 bindings, last held","gasUsed":71857,"bindings":4,"position":"last"}
+{"type":"ops","label":"testnet","A":1,"N":10,"rbac":{"onboard":1,"grants":10,"revokes":10,"interfaces":1},"externalized":{"onboard":1,"grants":10,"revokes":10,"interfaces":1},"appSpecific":{"rbac":10,"externalized":10}}
+{"type":"ops","label":"testnet","A":1,"N":100,"rbac":{"onboard":1,"grants":100,"revokes":100,"interfaces":1},"externalized":{"onboard":1,"grants":100,"revokes":100,"interfaces":1},"appSpecific":{"rbac":100,"externalized":100}}
+{"type":"ops","label":"testnet","A":4,"N":10,"rbac":{"onboard":4,"grants":40,"revokes":40,"interfaces":4},"externalized":{"onboard":4,"grants":10,"revokes":10,"interfaces":1},"appSpecific":{"rbac":40,"externalized":40}}
+{"type":"ops","label":"testnet","A":4,"N":100,"rbac":{"onboard":4,"grants":400,"revokes":400,"interfaces":4},"externalized":{"onboard":4,"grants":100,"revokes":100,"interfaces":1},"appSpecific":{"rbac":400,"externalized":400}}
+{"type":"ops","label":"testnet","A":16,"N":10,"rbac":{"onboard":16,"grants":160,"revokes":160,"interfaces":16},"externalized":{"onboard":16,"grants":10,"revokes":10,"interfaces":1},"appSpecific":{"rbac":160,"externalized":160}}
+{"type":"ops","label":"testnet","A":16,"N":100,"rbac":{"onboard":16,"grants":1600,"revokes":1600,"interfaces":16},"externalized":{"onboard":16,"grants":100,"revokes":100,"interfaces":1},"appSpecific":{"rbac":1600,"externalized":1600}}

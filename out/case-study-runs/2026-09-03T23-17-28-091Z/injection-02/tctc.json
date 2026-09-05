@@ -1,0 +1,20 @@
+{
+  "chains": {
+    "c": {
+      "chainId": 31337,
+      "rpcUrl": "http://127.0.0.1:8549"
+    }
+  },
+  "defaultChain": "c",
+  "self": {
+    "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+  },
+  "roles": {
+    "BENCH_ROLE": {
+      "description": "The role every tool in this task requires.",
+      "target": {
+        "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+      }
+    }
+  }
+}

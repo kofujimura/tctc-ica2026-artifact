@@ -1,0 +1,40 @@
+{
+  "chain": {
+    "key": "chain-31337",
+    "chainId": 31337,
+    "rpcUrl": "http://127.0.0.1:8548"
+  },
+  "target": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+  "subject": {
+    "mode": "configured",
+    "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+  },
+  "gate": {
+    "public": [],
+    "tools": {
+      "*": [
+        "BENCH_ROLE"
+      ]
+    }
+  },
+  "cache": {
+    "allowSeconds": 0,
+    "denySeconds": 0
+  },
+  "audit": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/granted-04/audit-memory.jsonl",
+  "grantUrlBase": "https://grant.example/",
+  "server": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-memory"
+    ],
+    "env": {
+      "MEMORY_FILE_PATH": "${MEMORY_FILE_PATH}"
+    },
+    "inherit": [
+      "PATH",
+      "HOME"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "chain": {
+    "key": "chain-31337",
+    "chainId": 31337,
+    "rpcUrl": "http://127.0.0.1:8548"
+  },
+  "target": "0x2279b7a0a67db372996a5fab50d91eaa73d2ebe6",
+  "subject": {
+    "mode": "configured",
+    "address": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8"
+  },
+  "gate": {
+    "public": [],
+    "tools": {
+      "read_*": [
+        "BENCH_ROLE"
+      ],
+      "list_*": [
+        "BENCH_ROLE"
+      ],
+      "directory_tree": [
+        "BENCH_ROLE"
+      ],
+      "search_files": [
+        "BENCH_ROLE"
+      ],
+      "get_file_info": [
+        "BENCH_ROLE"
+      ],
+      "write_file": [
+        "ADMIN_ROLE"
+      ],
+      "edit_file": [
+        "ADMIN_ROLE"
+      ],
+      "create_directory": [
+        "ADMIN_ROLE"
+      ],
+      "move_file": [
+        "ADMIN_ROLE"
+      ]
+    }
+  },
+  "cache": {
+    "allowSeconds": 0,
+    "denySeconds": 0
+  },
+  "audit": "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/expiry-06/audit-fs.jsonl",
+  "grantUrlBase": "https://grant.example/",
+  "server": {
+    "command": "npx",
+    "args": [
+      "-y",
+      "@modelcontextprotocol/server-filesystem",
+      "/Users/fujimura/Documents/IEEE-ICA/Sources/tctc-mcp/experiments/out/case-study-runs/2026-09-03T22-55-57-794Z/expiry-06/work"
+    ],
+    "env": {},
+    "inherit": [
+      "PATH",
+      "HOME"
+    ]
+  }
+}
