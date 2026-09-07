@@ -5,6 +5,7 @@
 //     node scripts/deploy.mjs --rpc $SEPOLIA_RPC --chain-id 11155111 --label testnet --out out/fixtures.testnet.json
 import { writeFileSync, mkdirSync } from "node:fs";
 import { dirname } from "node:path";
+import { toFunctionSelector } from "viem";
 import { clients, deploy, write, runMeta, parseArgs, maskRpc } from "../lib/chain.mjs";
 import { HARDHAT_KEYS } from "../lib/local-node.mjs";
 
@@ -50,7 +51,19 @@ targets.recordExpiring = recordX.address;
 console.log(`  RecordTarget (case study, on-chain PEP): ${recordT.address}; bound to expiring credential: ${recordX.address}`);
 const rbac = await deploy(issuer, "RbacTarget", []);
 gas["deploy.RbacTarget"] = rbac.gasUsed;
-console.log(`  RbacTarget (AccessControl baseline): ${rbac.address}`);
+console.log(`  RbacTarget (per-target AccessControl baseline): ${rbac.address}`);
+
+// Shared-registry baseline: one AccessManager holds the memberships and the
+// selector-to-role bindings for every target that names it as its authority.
+const REGISTRY_ROLE_ID = 42n;
+const manager = await deploy(issuer, "BenchAccessManager", [issuer.address]);
+const managed = await deploy(issuer, "ManagedTarget", [manager.address]);
+gas["deploy.BenchAccessManager"] = manager.gasUsed;
+gas["deploy.ManagedTarget"] = managed.gasUsed;
+const bind = await write(issuer, manager.address, manager.abi, "setTargetFunctionRole",
+  [managed.address, [toFunctionSelector("act()")], REGISTRY_ROLE_ID]);
+gas["registry.setTargetFunctionRole"] = bind.gasUsed;
+console.log(`  BenchAccessManager (shared-registry baseline): ${manager.address}\n  ManagedTarget: ${managed.address}`);
 
 // subject holds credential 0 (satisfies every bench target);
 // subject2 holds only credential 3 (worst case for the 4-binding target).
@@ -64,6 +77,7 @@ const fixtures = {
   controlTokens: cts.map((c) => c.address),
   expiringControlToken: expiring.address,
   targets, rbacTarget: rbac.address,
+  accessManager: manager.address, managedTarget: managed.address, registryRoleId: Number(REGISTRY_ROLE_ID),
   gas,
   ...(local ? { keys } : { keysFromEnv: true }),
 };

@@ -124,8 +124,9 @@ for (const [label, { path, rows }] of latestPerLabel("admin-cost.")) {
   const groups = new Map();
   for (const r of rows.filter((x) => x.type === "gas")) { const k = `${r.scheme}|${r.op}`; groups.set(k, [...(groups.get(k) ?? []), r.gasUsed]); }
   for (const [k, v] of groups) { const [scheme, op] = k.split("|"); const s = stats(v); md += `| ${scheme} | ${op} | ${s.p50} |\n`; tex += `${scheme} & ${op} & ${s.p50} \\\\ % gas ${label}\n`; }
-  md += "\n| (A,N) | RBAC onboard | RBAC grant+revoke | RBAC interfaces | ext. onboard | ext. grant+revoke | ext. interfaces | app-specific grant+revoke (both) |\n|---|---|---|---|---|---|---|---|\n";
-  for (const r of rows.filter((x) => x.type === "ops")) md += `| (${r.A},${r.N}) | ${r.rbac.onboard} | ${r.rbac.grants + r.rbac.revokes} | ${r.rbac.interfaces} | ${r.externalized.onboard} | ${r.externalized.grants + r.externalized.revokes} | ${r.externalized.interfaces} | ${2 * r.A * r.N} |\n`;
+  md += "\nOnboarding + grants and revokes, with administration clients in parentheses.\n\n| (A,N) | per-target RBAC | shared registry | externalized | app-specific (all) |\n|---|---|---|---|---|\n";
+  const cell = (o) => (o ? `${o.onboard} + ${o.grants + o.revokes} (${o.interfaces})` : "–");
+  for (const r of rows.filter((x) => x.type === "ops")) md += `| (${r.A},${r.N}) | ${cell(r.rbac)} | ${cell(r.registry)} | ${cell(r.externalized)} | ${2 * r.A * r.N} |\n`;
 }
 writeFileSync(`${OUT}/summary.md`, md);
 writeFileSync(`${OUT}/latency.csv`, csv);

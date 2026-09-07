@@ -1,62 +1,70 @@
-# Evaluation harness (IEEE ICA 2026 paper)
+# Evaluation harness
 
-Reproducible measurements for RQ2–RQ4 of the paper: administration cost,
-admission latency, revocation/expiry propagation, and fault injection.
-Everything is driven through a real stdio MCP client against the built
-`tctc-gate` (`../gate/dist/index.js`) wrapping a counting upstream server.
+Reproducible measurements for the paper *Grant Once, Revoke Everywhere:
+Cross-Application AI Agent Authorization via On-Chain Credentials*.
 
-## Setup
+Everything runs against the `tctc-gate` and `tctc-mcp` builds in this
+repository, driven through a real stdio MCP client. One command starts a
+local chain, deploys the fixtures, runs the benchmarks and regenerates every
+table in the paper from the raw logs.
+
+## What it measures
+
+| Script | Question | Output |
+|---|---|---|
+| `bench/rq1.mjs`, `bench/rq1-web.mjs` | Does one token type serve heterogeneous enforcement points? | grant / use / revoke / expiry against a contract, three unmodified npm MCP servers behind the gateway, and a SIWE-authenticated web route |
+| `bench/admin-cost.mjs` | What does administration cost? | operation counts and gas for per-target RBAC (`AccessControl`), a shared registry (`AccessManager`) and externalized tokens |
+| `bench/latency.mjs` | What does live authorization cost per call? | p50/p95/p99 and RPC requests per admission, by binding count and allow-cache lifetime |
+| `bench/revocation.mjs` | How fast does a burn or an expiry propagate? | block inclusion and first-denial times, reported separately |
+| `bench/faults.mjs` | Does the gateway fail closed? | eight injected faults; the metric is denied calls that reached the wrapped server |
+| `bench/case-study.mjs` | What does an agent experience? | a headless coding agent across all four kinds of enforcement point under five delegation conditions |
+
+## Running it
+
+Requires Node.js 20+ and **Hardhat 2** — installing `hardhat` without a
+version pulls in 3.x, which does not read `hardhat.config.cjs`.
 
 ```sh
-# from the tctc-mcp repository root
+# from the repository root
 npm ci && npm run build && (cd gate && npm run build)
 cd experiments && npm install && npm run compile
+
+node run-all.mjs            # local chain, ~10-15 min
+node summarize.mjs          # regenerate out/summary.md, latency.csv, tables.tex
 ```
 
-The harness uses **Hardhat 2** (`hardhat.config.cjs`); do not upgrade to
-Hardhat 3 (`npm install hardhat` without a version bumps to 3.x, which does
-not read `.cjs` configs and fails with `HHE3: No Hardhat config file found`).
+Against a public testnet, put funded keys in `experiments/.env.local`
+(`ISSUER_PRIVATE_KEY`, `SUBJECT_PRIVATE_KEY`, `SUBJECT2_PRIVATE_KEY`, and
+optionally `ALCHEMY_API_KEY` or `RPC`) and run `node run-testnet.mjs`. The
+fixtures are deployed once and reused; keys never enter a fixture file and
+RPC URLs are masked before they reach any log.
 
-## Local run (Hardhat node, chainId 31337, 1 s blocks)
+The agent case study spends LLM credits and therefore runs only when asked
+for by name: `node run-all.mjs --only case-study`.
+
+## Reproducing the paper's numbers
+
+`out/paper-runs.json` pins the exact run that each table and sentence cites,
+so `summarize.mjs` reads those files rather than the newest ones. To check a
+draft against them:
 
 ```sh
-node run-all.mjs                       # ~10–15 min with defaults
-node run-all.mjs --calls 200 --cycles 5 --expiry-cycles 3   # smoke test
+node verify-paper.mjs path/to/main.tex
 ```
 
-Raw logs are written to `out/*.jsonl`; `node summarize.mjs` regenerates
-`out/summary.md`, `out/latency.csv`, and `out/tables.tex` from them.
+It re-derives every figure quoted in the evaluation section from the pinned
+JSONL and fails on any mismatch. `node make-anon-artifact.mjs` builds a
+supplementary package with user names, home paths, e-mail addresses and RPC
+keys removed.
 
-## Public testnet run (Sepolia)
+## Layout
 
-```sh
-export ISSUER_PRIVATE_KEY=0x…  SUBJECT_PRIVATE_KEY=0x…  SUBJECT2_PRIVATE_KEY=0x…   # funded test keys
-export RPC=https://ethereum-sepolia-rpc.publicnode.com
-node scripts/deploy.mjs --rpc $RPC --chain-id 11155111 --label testnet --out out/fixtures.testnet.json
-node bench/latency.mjs    --fixtures out/fixtures.testnet.json --calls 1000
-node bench/revocation.mjs --fixtures out/fixtures.testnet.json --cycles 30 --expiry-cycles 10 --expiry-seconds 60 --poll-ms 250
-node bench/faults.mjs     --fixtures out/fixtures.testnet.json
-node bench/admin-cost.mjs --fixtures out/fixtures.testnet.json --repeat 3
-node summarize.mjs
 ```
-
-Keys are never written to fixture files for non-local labels.
-
-## What is measured
-
-| script | RQ | output |
-|---|---|---|
-| `bench/admin-cost.mjs` | RQ2 | gas of grantRole/revokeRole vs mint/burn, action gas vs bindings, analytic op counts |
-| `bench/latency.mjs` | RQ3 | p50/p95/p99 per condition, RPC requests per admission (counted by a proxy) |
-| `bench/revocation.mjs` | RQ3 | inclusion delay vs observation delay for grant, burn, and expiry |
-| `bench/faults.mjs` | RQ4 | code returned, upstream calls reached, RPC leak check per injected fault |
-| `bench/case-study.mjs` | case study | a headless Claude Code agent (built-in tools disabled) runs one task across two gated MCP servers, a SIWE web API (`lib/web-api.mjs`), and a contract, under five delegation conditions; per-trial transcripts and audit logs land in `out/case-study-runs/`. Spends LLM credits (~$0.10/trial with Sonnet), so it runs only with `node run-all.mjs --only case-study [--cs-trials N --cs-model sonnet\|haiku --cs-label L]` |
-
-Each JSONL file starts with a `meta` line recording the tctc-mcp commit,
-Node version, chain id, RPC URL, and parameters.
-
-Notes on resolution: the expiry experiment measures "deny observed after the
-first post-deadline block" against a 10 ms block-number watcher, so values
-are accurate to about ±10 ms (small negative values mean the gate saw the
-block before the watcher did). Chain time and wall-clock time drift apart on
-a local node, which is why block timestamps are not used for that delay.
+bench/       one script per research question
+lib/         stdio MCP client, counting RPC proxy with fault injection,
+             local node, chain helpers, SIWE web API, agent-side MCP tools
+contracts/   fixtures: ERC-7303 targets, control tokens, and the
+             AccessControl and AccessManager baselines
+scripts/     deployment
+out/         raw JSONL logs, regenerated summaries, pinned-run manifest
+```

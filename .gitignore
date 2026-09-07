@@ -15,7 +15,7 @@ out/*
 !out/latency.csv
 !out/tables.tex
 !out/fixtures.testnet.json
-!out/admin-cost.local.2026-09-03T08-00-19-684Z.jsonl
+!out/admin-cost.local.2026-09-06T00-37-32-375Z.jsonl
 !out/admin-cost.testnet.2026-09-03T09-34-10-118Z.jsonl
 !out/case-study.local-haiku.2026-09-03T23-17-28-067Z.jsonl
 !out/case-study.local.2026-09-03T22-55-57-769Z.jsonl

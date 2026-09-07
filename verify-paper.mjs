@@ -33,12 +33,20 @@ for (const m of tex.matchAll(/^(local|testnet)\s*&\s*(.+?)\s*&\s*([\d.]+)\s*&\s*
 // ---- Table II: gas (local admin-cost medians, in k) ----
 const gasRows = load("admin-cost", "local").filter((r) => r.type === "gas");
 const med = (scheme, op) => stats(gasRows.filter((r) => r.scheme === scheme && r.op.startsWith(op)).map((r) => r.gasUsed)).p50 / 1000;
-const g = tex.match(/gas: grant \/ revoke & \\multicolumn\{2\}\{c\}\{([\d.]+)k \/ ([\d.]+)k\} & \\multicolumn\{2\}\{c\}\{([\d.]+)k \/ ([\d.]+)k\}/);
+const g = tex.match(/gas, grant \/ revoke & ([\d.]+)k \/ ([\d.]+)k & ([\d.]+)k \/ ([\d.]+)k & ([\d.]+)k \/ ([\d.]+)k/);
 if (g) { check("gas rbac grant", Number(g[1]), med("rbac", "grantRole"), 0.05); check("gas rbac revoke", Number(g[2]), med("rbac", "revokeRole"), 0.05);
-         check("gas mint", Number(g[3]), med("externalized", "mint"), 0.05); check("gas burn", Number(g[4]), med("externalized", "burnByIssuer"), 0.05); }
-const ga = tex.match(/gas: action, 1 \/ 4 bind\. & \\multicolumn\{2\}\{c\}\{([\d.]+)k\} & \\multicolumn\{2\}\{c\}\{([\d.]+)k \/ ([\d.]+)k\}/);
-if (ga) { check("gas rbac act", Number(ga[1]), med("rbac", "act"), 0.05); check("gas act 1 binding", Number(ga[2]), med("externalized", "act, 1 binding"), 0.05); check("gas act 4 bindings first", Number(ga[3]), med("externalized", "act, 4 binding(s)"), 0.05); }
-const g4 = tex.match(/action costs ([\d.]+)k gas when only the last/); if (g4) check("gas act 4 bindings last", Number(g4[1]), med("externalized", "act, 4 bindings, last"), 0.05);
+         check("gas registry grant", Number(g[3]), med("registry", "grantRole"), 0.05); check("gas registry revoke", Number(g[4]), med("registry", "revokeRole"), 0.05);
+         check("gas mint", Number(g[5]), med("externalized", "mint"), 0.05); check("gas burn", Number(g[6]), med("externalized", "burnByIssuer"), 0.05); }
+const ga = tex.match(/gas, protected action & ([\d.]+)k & ([\d.]+)k & ([\d.]+)k/);
+if (ga) { check("gas rbac act", Number(ga[1]), med("rbac", "act"), 0.05); check("gas registry act", Number(ga[2]), med("registry", "act"), 0.05);
+          check("gas act 1 binding", Number(ga[3]), med("externalized", "act, 1 binding"), 0.05); }
+const g4 = tex.match(/four bindings cost ([\d.]+)k,\s*\n?and ([\d.]+)k when only the last/);
+if (g4) { check("gas act 4 bindings first", Number(g4[1]), med("externalized", "act, 4 binding(s)"), 0.05);
+          check("gas act 4 bindings last", Number(g4[2]), med("externalized", "act, 4 bindings, last"), 0.05); }
+// prose figures quoted in the RQ2 discussion
+const gp = tex.match(/([\d.]+)k gas for\s*\n?the registry and ([\d.]+)k for a token with one binding, against ([\d.]+)k/);
+if (gp) { check("prose registry act", Number(gp[1]), med("registry", "act"), 0.05); check("prose token act", Number(gp[2]), med("externalized", "act, 1 binding"), 0.05);
+          check("prose rbac act", Number(gp[3]), med("rbac", "act"), 0.05); }
 // ---- propagation prose ----
 const rev = (label) => load("revocation", label).filter((r) => r.type === "cycle");
 const lr = rev("local"), tr = rev("testnet");
@@ -47,9 +55,9 @@ const pm = (re) => { const m = tex.match(re); return m ? Number(m[1]) : undefine
 check("local burn inclusion p50 (ms)", pm(/a burn was included within (\d+)\\,ms/), Math.round(st(lr, "revoke", "inclusionMs").p50), 0.5);
 check("local revoke observed after inclusion p50", pm(/followed inclusion by (\d+)\\,ms median/), Math.round(st(lr, "revoke", "afterInclusionMs").p50), 0.5);
 check("local revoke observed after inclusion max", pm(/median and (\d+)\\,ms maximum/), Math.round(st(lr, "revoke", "afterInclusionMs").max), 0.5);
-check("local expiry deny after block p50", pm(/reached the deadline, (\d+)\\,ms median/), Math.round(st(lr, "expiry", "denyObservedAfterFirstBlockMs").p50), 0.5);
+check("local expiry deny after block p50", pm(/past the deadline, (\d+)\\,ms median/), Math.round(st(lr, "expiry", "denyObservedAfterFirstBlockMs").p50), 0.5);
 check("testnet grant inclusion p50 (s)", pm(/inclusion took ([\d.]+)\\,s \(median\) for a grant/), Number((st(tr, "grant", "inclusionMs").p50 / 1000).toFixed(1)), 0.05);
-check("testnet burn inclusion p50 (s)", pm(/and\s+([\d.]+)\\,s for a burn/), Number((st(tr, "revoke", "inclusionMs").p50 / 1000).toFixed(1)), 0.05);
+check("testnet burn inclusion p50 (s)", pm(/and ([\d.]+)\\,s for a\s+burn/), Number((st(tr, "revoke", "inclusionMs").p50 / 1000).toFixed(1)), 0.05);
 check("testnet expiry deny after block p50 (ms)", pm(/first\s+post-deadline block, (\d+)\\,ms median/), Math.round(st(tr, "expiry", "denyObservedAfterFirstBlockMs").p50), 0.5);
 // ---- fail-closed count ----
 const lt = load("latency", "testnet").filter((r) => r.type === "call" && r.bindings > 0 && r.allowSeconds === 0);

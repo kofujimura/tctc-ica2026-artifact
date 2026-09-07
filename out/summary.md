@@ -1,6 +1,6 @@
 # Evaluation summary
 
-Generated 2026-09-04T01:13:58.308Z from raw logs in `out/` (runs pinned by `out/paper-runs.json`).
+Generated 2026-09-06T00:41:05.764Z from raw logs in `out/` (runs pinned by `out/paper-runs.json`).
 
 ## Latency (local) — `out/latency.local.2026-09-03T08-00-20-017Z.jsonl`
 commit f36c656e, node v22.16.0, chain 31337, 1000 calls/condition after 50 warm-up
@@ -130,13 +130,16 @@ agent: claude-code-headless, model haiku, 5 trials/condition, expiry 12 s
 
 Total: 25 trials, 8.8 min of agent time, $0.80. Errors: 0.
 
-## Administration cost (local) — `out/admin-cost.local.2026-09-03T08-00-19-684Z.jsonl`
+## Administration cost (local) — `out/admin-cost.local.2026-09-06T00-37-32-375Z.jsonl`
 
 | scheme | operation | gas (median) |
 |---|---|---|
 | rbac | grantRole | 51465 |
 | rbac | act (local mapping) | 28738 |
 | rbac | revokeRole | 29479 |
+| registry | grantRole | 55290 |
+| registry | act (shared registry) | 40129 |
+| registry | revokeRole | 31227 |
 | externalized | mint (grant) | 52669 |
 | externalized | burnByIssuer (revoke) | 28166 |
 | externalized | act, 1 binding(s), first held | 41274 |
@@ -144,14 +147,16 @@ Total: 25 trials, 8.8 min of agent time, $0.80. Errors: 0.
 | externalized | act, 4 binding(s), first held | 54555 |
 | externalized | act, 4 bindings, last held | 71857 |
 
-| (A,N) | RBAC onboard | RBAC grant+revoke | RBAC interfaces | ext. onboard | ext. grant+revoke | ext. interfaces | app-specific grant+revoke (both) |
-|---|---|---|---|---|---|---|---|
-| (1,10) | 1 | 20 | 1 | 1 | 20 | 1 | 20 |
-| (1,100) | 1 | 200 | 1 | 1 | 200 | 1 | 200 |
-| (4,10) | 4 | 80 | 4 | 4 | 20 | 1 | 80 |
-| (4,100) | 4 | 800 | 4 | 4 | 200 | 1 | 800 |
-| (16,10) | 16 | 320 | 16 | 16 | 20 | 1 | 320 |
-| (16,100) | 16 | 3200 | 16 | 16 | 200 | 1 | 3200 |
+Onboarding + grants and revokes, with administration clients in parentheses.
+
+| (A,N) | per-target RBAC | shared registry | externalized | app-specific (all) |
+|---|---|---|---|---|
+| (1,10) | 1 + 20 (1) | 1 + 20 (1) | 1 + 20 (1) | 20 |
+| (1,100) | 1 + 200 (1) | 1 + 200 (1) | 1 + 200 (1) | 200 |
+| (4,10) | 4 + 80 (4) | 4 + 20 (1) | 4 + 20 (1) | 80 |
+| (4,100) | 4 + 800 (4) | 4 + 200 (1) | 4 + 200 (1) | 800 |
+| (16,10) | 16 + 320 (16) | 16 + 20 (1) | 16 + 20 (1) | 320 |
+| (16,100) | 16 + 3200 (16) | 16 + 200 (1) | 16 + 200 (1) | 3200 |
 
 ## Administration cost (testnet) — `out/admin-cost.testnet.2026-09-03T09-34-10-118Z.jsonl`
 
@@ -167,11 +172,13 @@ Total: 25 trials, 8.8 min of agent time, $0.80. Errors: 0.
 | externalized | act, 4 binding(s), first held | 54555 |
 | externalized | act, 4 bindings, last held | 71857 |
 
-| (A,N) | RBAC onboard | RBAC grant+revoke | RBAC interfaces | ext. onboard | ext. grant+revoke | ext. interfaces | app-specific grant+revoke (both) |
-|---|---|---|---|---|---|---|---|
-| (1,10) | 1 | 20 | 1 | 1 | 20 | 1 | 20 |
-| (1,100) | 1 | 200 | 1 | 1 | 200 | 1 | 200 |
-| (4,10) | 4 | 80 | 4 | 4 | 20 | 1 | 80 |
-| (4,100) | 4 | 800 | 4 | 4 | 200 | 1 | 800 |
-| (16,10) | 16 | 320 | 16 | 16 | 20 | 1 | 320 |
-| (16,100) | 16 | 3200 | 16 | 16 | 200 | 1 | 3200 |
+Onboarding + grants and revokes, with administration clients in parentheses.
+
+| (A,N) | per-target RBAC | shared registry | externalized | app-specific (all) |
+|---|---|---|---|---|
+| (1,10) | 1 + 20 (1) | – | 1 + 20 (1) | 20 |
+| (1,100) | 1 + 200 (1) | – | 1 + 200 (1) | 200 |
+| (4,10) | 4 + 80 (4) | – | 4 + 20 (1) | 80 |
+| (4,100) | 4 + 800 (4) | – | 4 + 200 (1) | 800 |
+| (16,10) | 16 + 320 (16) | – | 16 + 20 (1) | 320 |
+| (16,100) | 16 + 3200 (16) | – | 16 + 200 (1) | 3200 |

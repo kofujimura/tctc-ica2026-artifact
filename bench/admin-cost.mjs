@@ -18,6 +18,8 @@ console.log(`admin cost → ${out}`);
 const repeat = Number(a.repeat);
 const ROLE = keccak256(stringToHex("BENCH_ROLE"));
 const rbacAbi = artifact("RbacTarget").abi, ctAbi = artifact("AgentControlTokens").abi, benchAbi = artifact("BenchTarget").abi;
+const mgrAbi = artifact("BenchAccessManager").abi, managedAbi = artifact("ManagedTarget").abi;
+const REGISTRY_ROLE = BigInt(f.registryRoleId ?? 42);
 const pollingInterval = f.chainId === 31337 ? 50 : 1000;
 const gas = async (who, addr, abi, fn, args) => (await write(who, addr, abi, fn, args, { pollingInterval })).gasUsed;
 const rec = (scheme, op, g, extra = {}) => { w({ type: "gas", label, scheme, op, gasUsed: g, ...extra }); console.log(`  ${scheme.padEnd(12)} ${op.padEnd(28)} ${g}`); };
@@ -28,6 +30,10 @@ for (let i = 0; i < repeat; i++) {
   if (i === 0) await gas(f.subject2, f.rbacTarget, rbacAbi, "act", []); // warm the counter slot
   rec("rbac", "act (local mapping)", await gas(f.subject2, f.rbacTarget, rbacAbi, "act", []), { i });
   rec("rbac", "revokeRole", await gas(f.issuer, f.rbacTarget, rbacAbi, "revokeRole", [ROLE, s2]), { i });
+  rec("registry", "grantRole", await gas(f.issuer, f.accessManager, mgrAbi, "grantRole", [REGISTRY_ROLE, s2, 0]), { i });
+  if (i === 0) await gas(f.subject2, f.managedTarget, managedAbi, "act", []); // warm the counter slot
+  rec("registry", "act (shared registry)", await gas(f.subject2, f.managedTarget, managedAbi, "act", []), { i });
+  rec("registry", "revokeRole", await gas(f.issuer, f.accessManager, mgrAbi, "revokeRole", [REGISTRY_ROLE, s2]), { i });
   rec("externalized", "mint (grant)", await gas(f.issuer, f.controlTokens[1], ctAbi, "mint", [s2, 1n, 1n]), { i });
   rec("externalized", "burnByIssuer (revoke)", await gas(f.issuer, f.controlTokens[1], ctAbi, "burnByIssuer", [s2, 1n, 1n]), { i });
 }
@@ -38,8 +44,11 @@ for (const k of [1, 2, 4]) rec("externalized", `act, ${k} binding(s), first held
 rec("externalized", "act, 4 bindings, last held", await warmGas(f.subject2, f.targets.bindings4), { bindings: 4, position: "last" });
 
 // analytic operation counts for a shared qualification
+// A shared registry needs the same O(A+N) operations as the externalized scheme:
+// one onboarding per target, one grant and one revoke per subject.
 for (const A of [1, 4, 16]) for (const N of [10, 100]) {
-  w({ type: "ops", label, A, N, rbac: { onboard: A, grants: A * N, revokes: A * N, interfaces: A }, externalized: { onboard: A, grants: N, revokes: N, interfaces: 1 },
+  w({ type: "ops", label, A, N, rbac: { onboard: A, grants: A * N, revokes: A * N, interfaces: A },
+    registry: { onboard: A, grants: N, revokes: N, interfaces: 1 }, externalized: { onboard: A, grants: N, revokes: N, interfaces: 1 },
     appSpecific: { rbac: 2 * A * N, externalized: 2 * A * N, note: "grant+revoke for application-specific roles, both schemes" } });
 }
 console.log("done");

@@ -1,5 +1,5 @@
 {
-  "$comment": "Runs cited in the paper. summarize.mjs and verify-paper.mjs use these files instead of the newest ones. Evaluated revision tctc-mcp f36c656.",
+  "$comment": "Runs cited in the paper. summarize.mjs and verify-paper.mjs use these files instead of the newest ones. Evaluated revision tctc-mcp f36c656.  The local admin-cost run was re-pinned on 2026-09-04 when the shared-registry (OpenZeppelin AccessManager) baseline was added; the testnet admin-cost run predates it, and all gas figures quoted in the paper are the local ones.",
   "runs": {
     "latency": {
       "local": "latency.local.2026-09-03T08-00-20-017Z.jsonl",
@@ -10,7 +10,7 @@
       "testnet": "revocation.testnet.2026-09-03T09-52-01-575Z.jsonl"
     },
     "admin-cost": {
-      "local": "admin-cost.local.2026-09-03T08-00-19-684Z.jsonl",
+      "local": "admin-cost.local.2026-09-06T00-37-32-375Z.jsonl",
       "testnet": "admin-cost.testnet.2026-09-03T09-34-10-118Z.jsonl"
     },
     "faults": {
