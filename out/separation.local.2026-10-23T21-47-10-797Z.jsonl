@@ -1,0 +1,76 @@
+{"type":"meta","kind":"separation","label":"local","ts":"2026-10-23T21:47:10.842Z","node":"v22.23.4","platform":"darwin-arm64","tctcMcpCommit":"30775ee59b0d445dffb4cc926e58a5956d4ae57e","tctcMcpUncommitted":[],"fixtures":"out/fixtures.local.json","rpcUrl":"http://127.0.0.1:8550","chainId":31337}
+{"type":"account","name":"I1","address":"0x90F79bf6EB2c4f870365E785982E1f101E93b906"}
+{"type":"account","name":"I2","address":"0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"}
+{"type":"account","name":"T1","address":"0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"}
+{"type":"account","name":"T2","address":"0x976EA74026E726554dB657fA54763abd0C3a0aa9"}
+{"type":"account","name":"T3","address":"0x14dC79964da2C08b23698B3D3cc7Ca32193d9955"}
+{"type":"account","name":"S","address":"0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f"}
+{"type":"account","name":"S2","address":"0xa0Ee7A142d267C1f36714E4a8F75612F20a79720"}
+{"type":"account","name":"X","address":"0xBcd4042DE499D14e55001CcbB24a551F3b954096"}
+{"type":"tx","phase":"issue","signer":"I1","to":null,"fn":"deploy AgentControlTokens","status":"success","block":9574,"contract":"0x057ef64e23666f000b34ae31332854acbd1c8544"}
+{"type":"tx","phase":"issue","signer":"I1","to":null,"fn":"deploy ExpiringControlTokens","status":"success","block":9575,"contract":"0x261d8c5e9742e6f7f1076fa1f560894524e19cad"}
+{"type":"tx","phase":"issue","signer":"I2","to":null,"fn":"deploy AgentControlTokens","status":"success","block":9576,"contract":"0xbded0d2bf404bdcba897a74e6657f1f12e5c6fb6"}
+{"type":"tx","phase":"issue","signer":"I1","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"mint","status":"success","block":9577}
+{"type":"tx","phase":"issue","signer":"I1","to":"0x261d8c5e9742e6f7f1076fa1f560894524e19cad","fn":"mint","status":"success","block":9578}
+{"type":"tx","phase":"issue","signer":"I2","to":"0xbded0d2bf404bdcba897a74e6657f1f12e5c6fb6","fn":"mint","status":"success","block":9579}
+{"type":"tx","phase":"onboard","signer":"T1","to":null,"fn":"deploy BindableTarget","status":"success","block":9580,"contract":"0x0116686e2291dbd5e317f47fadbfb43b599786ef"}
+{"type":"tx","phase":"onboard","signer":"T1","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"bindERC1155","status":"success","block":9581}
+{"type":"tx","phase":"onboard","signer":"T2","to":null,"fn":"deploy BindableTarget","status":"success","block":9582,"contract":"0x7ef8e99980da5bcedcf7c10f41e55f759f6a174b"}
+{"type":"tx","phase":"onboard","signer":"T2","to":"0x7ef8e99980da5bcedcf7c10f41e55f759f6a174b","fn":"bindERC1155","status":"success","block":9583}
+{"type":"tx","phase":"onboard","signer":"T3","to":null,"fn":"deploy BindableTarget","status":"success","block":9584,"contract":"0xef11d1c2aa48826d4c41e54ab82d1ff5ad8a64ca"}
+{"type":"tx","phase":"onboard","signer":"T3","to":"0xef11d1c2aa48826d4c41e54ab82d1ff5ad8a64ca","fn":"bindERC1155","status":"success","block":9585}
+{"type":"tx","phase":"onboard","signer":"T3","to":"0xef11d1c2aa48826d4c41e54ab82d1ff5ad8a64ca","fn":"bindERC1155","status":"success","block":9586}
+{"type":"authority","contract":"0x057ef64e23666f000b34ae31332854acbd1c8544","kind":"token","org":"I1","owner":"0x90F79bf6EB2c4f870365E785982E1f101E93b906"}
+{"type":"authority","contract":"0x261d8c5e9742e6f7f1076fa1f560894524e19cad","kind":"token","org":"I1","owner":"0x90F79bf6EB2c4f870365E785982E1f101E93b906"}
+{"type":"authority","contract":"0xbded0d2bf404bdcba897a74e6657f1f12e5c6fb6","kind":"token","org":"I2","owner":"0x15d34AAf54267DB7D7c367839AAf71A00a2C6A65"}
+{"type":"authority","contract":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","kind":"target","org":"T1","owner":"0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc","role":"0x523a704056dcd17bcf83bed8b68c59416dac1119be77755efe3bde0a64e46e0c","bindings":["0x057ef64E23666F000b34aE31332854aCBd1c8544"]}
+{"type":"authority","contract":"0x7ef8e99980da5bcedcf7c10f41e55f759f6a174b","kind":"target","org":"T2","owner":"0x976EA74026E726554dB657fA54763abd0C3a0aa9","role":"0xdd9456f462accb32748ce88d08b1decec4ecc7cd8cf509c0a08af7f41d04aa19","bindings":["0x057ef64E23666F000b34aE31332854aCBd1c8544"]}
+{"type":"authority","contract":"0xef11d1c2aa48826d4c41e54ab82d1ff5ad8a64ca","kind":"target","org":"T3","owner":"0x14dC79964da2C08b23698B3D3cc7Ca32193d9955","role":"0xba49b097b028e8792dd8153f2b680ea83a128e68e2c95d3e434e897738982086","bindings":["0x057ef64E23666F000b34aE31332854aCBd1c8544","0xbdEd0D2bf404bdcBa897a74E6657f1f12e5C6fb6"]}
+{"type":"tx","phase":"use","signer":"S","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act","status":"success","block":9588}
+{"type":"check","phase":"use","pep":"contract (T1)","subject":"S","expected":"allow","observed":"allow","pass":true}
+{"type":"tx","phase":"use","signer":"S2","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act","status":"refused","reason":"ERC7303: not has a required token"}
+{"type":"check","phase":"use","pep":"contract (T1)","subject":"S2","expected":"deny","observed":"deny","pass":true}
+{"type":"tx","phase":"use","signer":"X","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act","status":"refused","reason":"ERC7303: not has a required token"}
+{"type":"check","phase":"use","pep":"contract (T1)","subject":"X","expected":"deny","observed":"deny","pass":true}
+{"type":"check","phase":"use","pep":"MCP gate (T2)","subject":"S","expected":"allow","observed":"allow","pass":true}
+{"type":"check","phase":"use","pep":"MCP gate (T2)","subject":"S2","expected":"TCTC_ROLE_DENIED","observed":"TCTC_ROLE_DENIED","pass":true}
+{"type":"check","phase":"use","pep":"MCP gate (T2)","subject":"X","expected":"TCTC_ROLE_DENIED","observed":"TCTC_ROLE_DENIED","pass":true}
+{"type":"check","phase":"use","pep":"web API (T3)","subject":"S","expected":"200","observed":"200","pass":true}
+{"type":"check","phase":"use","pep":"web API (T3)","subject":"S2","expected":"200","observed":"200","pass":true}
+{"type":"check","phase":"use","pep":"web API (T3)","subject":"X","expected":"403","observed":"403","pass":true}
+{"type":"tx","phase":"attack","signer":"T1","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"mint","status":"refused","reason":"OwnableUnauthorizedAccount"}
+{"type":"attack","scenario":"target admin mints the issuer's token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"OwnableUnauthorizedAccount"}
+{"type":"tx","phase":"attack","signer":"T1","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"burnByIssuer","status":"refused","reason":"OwnableUnauthorizedAccount"}
+{"type":"attack","scenario":"target admin burns a holder's token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"OwnableUnauthorizedAccount"}
+{"type":"tx","phase":"attack","signer":"X","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"mint","status":"refused","reason":"OwnableUnauthorizedAccount"}
+{"type":"attack","scenario":"outsider mints the issuer's token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"OwnableUnauthorizedAccount"}
+{"type":"tx","phase":"attack","signer":"I1","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"bindERC1155","status":"refused","reason":"OwnableUnauthorizedAccount"}
+{"type":"attack","scenario":"issuer rebinds a target's role","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"OwnableUnauthorizedAccount"}
+{"type":"tx","phase":"attack","signer":"X","to":null,"fn":"deploy AgentControlTokens","status":"success","block":9602,"contract":"0xfbfbfddd6e35da57b7b0f9a2c10e34be70b3a4e9"}
+{"type":"tx","phase":"attack","signer":"X","to":"0xfbfbfddd6e35da57b7b0f9a2c10e34be70b3a4e9","fn":"mint","status":"success","block":9603}
+{"type":"tx","phase":"attack","signer":"X","to":"0x7ef8e99980da5bcedcf7c10f41e55f759f6a174b","fn":"bindERC1155","status":"refused","reason":"OwnableUnauthorizedAccount"}
+{"type":"attack","scenario":"outsider binds its own token at a target","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"OwnableUnauthorizedAccount"}
+{"type":"tx","phase":"attack","signer":"X","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act","status":"refused","reason":"ERC7303: not has a required token"}
+{"type":"attack","scenario":"counterfeit collection with the issuer's name","expected":"deny,TCTC_ROLE_DENIED,403","observed":"deny,TCTC_ROLE_DENIED,403","stateUnchanged":true,"pass":true,"sameName":true}
+{"type":"tx","phase":"attack","signer":"S","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"safeTransferFrom","status":"refused","reason":"Soulbound"}
+{"type":"attack","scenario":"holder transfers its token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"Soulbound"}
+{"type":"tx","phase":"attack","signer":"S","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"setApprovalForAll","status":"success","block":9610}
+{"type":"tx","phase":"attack","signer":"X","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"safeTransferFrom","status":"refused","reason":"Soulbound"}
+{"type":"tx","phase":"attack","signer":"S","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"setApprovalForAll","status":"success","block":9612}
+{"type":"attack","scenario":"approved operator transfers the token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"Soulbound"}
+{"type":"tx","phase":"attack","signer":"S","to":"0x261d8c5e9742e6f7f1076fa1f560894524e19cad","fn":"safeTransferFrom","status":"refused","reason":"Soulbound"}
+{"type":"attack","scenario":"holder transfers its timed token","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"Soulbound"}
+{"type":"attack","scenario":"replayed SIWE sign-in","expected":"401","observed":"401","stateUnchanged":true,"pass":true}
+{"type":"tx","phase":"attack","signer":"S","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act (signed, first broadcast)","status":"success"}
+{"type":"attack","scenario":"rebroadcast signed transaction","expected":"refused","observed":"refused","stateUnchanged":true,"pass":true,"reason":"Nonce too low. Expected nonce to be 4 but got 3. Note that transactions can't be queued when automining."}
+{"type":"check","phase":"attack","pep":"web API (T3)","subject":"X with S's session","expected":"200","observed":"200","pass":true,"note":"stolen session before the burn"}
+{"type":"tx","phase":"burn","signer":"I1","to":"0x057ef64e23666f000b34ae31332854acbd1c8544","fn":"burnByIssuer","status":"success","block":9617}
+{"type":"tx","phase":"burn","signer":"S","to":"0x0116686e2291dbd5e317f47fadbfb43b599786ef","fn":"act","status":"refused","reason":"ERC7303: not has a required token"}
+{"type":"check","phase":"burn","pep":"contract (T1)","subject":"S","expected":"deny","observed":"deny","pass":true}
+{"type":"check","phase":"burn","pep":"MCP gate (T2)","subject":"S","expected":"TCTC_ROLE_DENIED","observed":"TCTC_ROLE_DENIED","pass":true}
+{"type":"check","phase":"burn","pep":"web API (T3)","subject":"S","expected":"403","observed":"403","pass":true}
+{"type":"check","phase":"burn","pep":"web API (T3)","subject":"X with S's session","expected":"403","observed":"403","pass":true,"note":"stolen session after the burn"}
+{"type":"check","phase":"burn","pep":"web API (T3)","subject":"S2","expected":"200","observed":"200","pass":true,"note":"the other issuer's holder is unaffected"}
+{"type":"tx","phase":"burn2","signer":"I2","to":"0xbded0d2bf404bdcba897a74e6657f1f12e5c6fb6","fn":"burnByIssuer","status":"success","block":9626}
+{"type":"check","phase":"burn2","pep":"web API (T3)","subject":"S2","expected":"403","observed":"403","pass":true}
+{"type":"summary","adminTxBySigner":{"issue":{"I1":4,"I2":2},"onboard":{"T1":2,"T2":2,"T3":3},"burn":{"I1":1},"burn2":{"I2":1}},"crossOrgAdminWrites":0,"deniedForwarded":0,"failures":0,"attacks":11,"checks":16}

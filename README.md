@@ -13,7 +13,9 @@ table in the paper from the raw logs.
 | Script | Question | Output |
 |---|---|---|
 | `bench/rq1.mjs`, `bench/rq1-web.mjs` | Does one token type serve heterogeneous enforcement points? | grant / use / revoke / expiry against a contract, three unmodified npm MCP servers behind the gateway, and a SIWE-authenticated web route |
+| `bench/separation.mjs` | Does it hold when issuer and targets are different organizations? | two issuers and three target organizations on separate keys: who signed what, eleven authority-boundary attacks, and each issuer's burn (local only) |
 | `bench/admin-cost.mjs` | What does administration cost? | operation counts and gas for per-target RBAC (`AccessControl`), a shared registry (`AccessManager`) and externalized tokens |
+| `bench/admin-ops.mjs` | Do the operation counts hold when executed? | every grant, revoke and onboarding issued on chain, with membership records counted from events and every target's decision read back, including a registry per administrative domain (local only) |
 | `bench/latency.mjs` | What does live authorization cost per call? | p50/p95/p99 and RPC requests per admission, by binding count and allow-cache lifetime |
 | `bench/revocation.mjs` | How fast does a burn or an expiry propagate? | block inclusion and first-denial times, reported separately |
 | `bench/faults.mjs` | Does the gateway fail closed? | eight injected faults; the metric is denied calls that reached the wrapped server |
@@ -53,7 +55,9 @@ node verify-paper.mjs path/to/main.tex
 ```
 
 It re-derives every figure quoted in the evaluation section from the pinned
-JSONL and fails on any mismatch. `node make-anon-artifact.mjs` builds a
+JSONL and fails on any mismatch. `summarize.mjs` also writes `out/stats.json`:
+order-statistic 95% intervals for latency and propagation quantiles and
+Clopper–Pearson intervals for the proportions (`lib/ci.mjs`). `node make-anon-artifact.mjs` builds a
 supplementary package with user names, home paths, e-mail addresses and RPC
 keys removed.
 

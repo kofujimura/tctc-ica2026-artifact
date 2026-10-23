@@ -1,5 +1,5 @@
 {
-  "$comment": "Runs cited in the paper. summarize.mjs and verify-paper.mjs use these files instead of the newest ones. Evaluated revision tctc-mcp f36c656.  The local admin-cost run was re-pinned on 2026-09-04 when the shared-registry (OpenZeppelin AccessManager) baseline was added; the testnet admin-cost run predates it, and all gas figures quoted in the paper are the local ones.",
+  "$comment": "Runs cited in the paper. summarize.mjs and verify-paper.mjs use these files instead of the newest ones. Evaluated revision tctc-mcp f36c656.  The local admin-cost run was re-pinned on 2026-09-04 when the shared-registry (OpenZeppelin AccessManager) baseline was added; the testnet admin-cost run predates it, and all gas figures quoted in the paper are the local ones.  Added for the camera-ready version on 2026-10-24 (harness only; the evaluated tctc-mcp code is still f36c656): admin-ops executes Table II's operation counts and separation runs RQ1 with every organization on its own key; both are local-only.",
   "runs": {
     "latency": {
       "local": "latency.local.2026-09-03T08-00-20-017Z.jsonl",
@@ -28,6 +28,12 @@
     "case-study": {
       "local": "case-study.local.2026-09-03T22-55-57-769Z.jsonl",
       "local-haiku": "case-study.local-haiku.2026-09-03T23-17-28-067Z.jsonl"
+    },
+    "admin-ops": {
+      "local": "admin-ops.local.2026-10-23T21-46-37-306Z.jsonl"
+    },
+    "separation": {
+      "local": "separation.local.2026-10-23T21-47-10-797Z.jsonl"
     }
   }
 }

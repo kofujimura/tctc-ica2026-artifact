@@ -1,0 +1,254 @@
+{
+  "latency": {
+    "local/ungated": {
+      "n": 1000,
+      "p50": 0.043833,
+      "p50lo": 0.043583,
+      "p50hi": 0.044084,
+      "p95": 0.054042,
+      "p95lo": 0.052916,
+      "p95hi": 0.055625
+    },
+    "local/gate-1b-allow0": {
+      "n": 1000,
+      "p50": 1.473958,
+      "p50lo": 1.455792,
+      "p50hi": 1.4965,
+      "p95": 2.455667,
+      "p95lo": 2.346959,
+      "p95hi": 2.682959
+    },
+    "local/gate-2b-allow0": {
+      "n": 1000,
+      "p50": 1.451,
+      "p50lo": 1.433,
+      "p50hi": 1.470791,
+      "p95": 2.685583,
+      "p95lo": 2.556208,
+      "p95hi": 2.819583
+    },
+    "local/gate-4b-allow0": {
+      "n": 1000,
+      "p50": 1.723916,
+      "p50lo": 1.703417,
+      "p50hi": 1.747458,
+      "p95": 3.149542,
+      "p95lo": 2.950583,
+      "p95hi": 3.466542
+    },
+    "local/gate-1b-allow1": {
+      "n": 1000,
+      "p50": 0.064959,
+      "p50lo": 0.064667,
+      "p50hi": 0.065291,
+      "p95": 0.082792,
+      "p95lo": 0.081167,
+      "p95hi": 0.085959
+    },
+    "local/gate-1b-allow5": {
+      "n": 1000,
+      "p50": 0.068125,
+      "p50lo": 0.067791,
+      "p50hi": 0.0685,
+      "p95": 0.0875,
+      "p95lo": 0.085041,
+      "p95hi": 0.092417
+    },
+    "local/gate-1b-allow10": {
+      "n": 1000,
+      "p50": 0.066625,
+      "p50lo": 0.06625,
+      "p50hi": 0.067042,
+      "p95": 0.092542,
+      "p95lo": 0.087916,
+      "p95hi": 0.096166
+    },
+    "testnet/ungated": {
+      "n": 1000,
+      "p50": 0.043709,
+      "p50lo": 0.0435,
+      "p50hi": 0.044,
+      "p95": 0.052666,
+      "p95lo": 0.0515,
+      "p95hi": 0.053917
+    },
+    "testnet/gate-1b-allow0": {
+      "n": 1000,
+      "p50": 46.145792,
+      "p50lo": 45.25,
+      "p50hi": 47.031167,
+      "p95": 520.46225,
+      "p95lo": 380.206292,
+      "p95hi": 527.1815
+    },
+    "testnet/gate-2b-allow0": {
+      "n": 1000,
+      "p50": 199.114375,
+      "p50lo": 57.210709,
+      "p50hi": 202.551125,
+      "p95": 718.019375,
+      "p95lo": 684.818209,
+      "p95hi": 1033.723041
+    },
+    "testnet/gate-4b-allow0": {
+      "n": 1000,
+      "p50": 207.786125,
+      "p50lo": 206.85025,
+      "p50hi": 209.122917,
+      "p95": 1153.028958,
+      "p95lo": 1140.19325,
+      "p95hi": 1173.617834
+    },
+    "testnet/gate-1b-allow1": {
+      "n": 1000,
+      "p50": 0.087916,
+      "p50lo": 0.08675,
+      "p50hi": 0.089042,
+      "p95": 0.1775,
+      "p95lo": 0.165,
+      "p95hi": 0.195334
+    },
+    "testnet/gate-1b-allow5": {
+      "n": 1000,
+      "p50": 0.070542,
+      "p50lo": 0.07,
+      "p50hi": 0.071083,
+      "p95": 0.087167,
+      "p95lo": 0.084916,
+      "p95hi": 0.090125
+    },
+    "testnet/gate-1b-allow10": {
+      "n": 1000,
+      "p50": 0.071042,
+      "p50lo": 0.070625,
+      "p50hi": 0.071625,
+      "p95": 0.088083,
+      "p95lo": 0.086125,
+      "p95hi": 0.091458
+    }
+  },
+  "propagation": {
+    "local/grant inclusion ms": {
+      "n": 30,
+      "median": 5,
+      "lo": 5,
+      "hi": 6,
+      "max": 7
+    },
+    "local/burn inclusion ms": {
+      "n": 30,
+      "median": 6,
+      "lo": 6,
+      "hi": 6,
+      "max": 7
+    },
+    "local/first denial after inclusion ms": {
+      "n": 30,
+      "median": 26,
+      "lo": 26,
+      "hi": 26,
+      "max": 27
+    },
+    "local/expiry denial after first post-deadline block ms": {
+      "n": 30,
+      "median": 10,
+      "lo": 3,
+      "hi": 17,
+      "max": 32
+    },
+    "local/expiry at first block": {
+      "x": 30,
+      "n": 30,
+      "lo": 0.8842966917779753,
+      "hi": 1
+    },
+    "testnet/grant inclusion ms": {
+      "n": 30,
+      "median": 12367,
+      "lo": 11591,
+      "hi": 12390,
+      "max": 24624
+    },
+    "testnet/burn inclusion ms": {
+      "n": 30,
+      "median": 11649,
+      "lo": 11364,
+      "hi": 12395,
+      "max": 24791
+    },
+    "testnet/first denial after inclusion ms": {
+      "n": 30,
+      "median": -277,
+      "lo": -561,
+      "hi": -94,
+      "max": 216
+    },
+    "testnet/expiry denial after first post-deadline block ms": {
+      "n": 10,
+      "median": 101,
+      "lo": 21,
+      "hi": 499,
+      "max": 589
+    },
+    "testnet/expiry at first block": {
+      "x": 10,
+      "n": 10,
+      "lo": 0.6915028921812443,
+      "hi": 1
+    }
+  },
+  "failClosed": {
+    "x": 7,
+    "n": 3000,
+    "lo": 0.0009386195807190073,
+    "hi": 0.004801612708561024
+  },
+  "caseStudy": {
+    "totals": {
+      "trials": 75,
+      "unauthorizedTrials": 0,
+      "done": 30,
+      "shouldBeDone": 30,
+      "injectionTrials": 15,
+      "injectionFollowed": 0,
+      "deniedTrials": 39,
+      "retried": 0
+    },
+    "unauthorized": {
+      "x": 0,
+      "n": 75,
+      "lo": 0,
+      "hi": 0.04799506405514227
+    },
+    "done": {
+      "x": 30,
+      "n": 30,
+      "lo": 0.8842966917779753,
+      "hi": 1
+    },
+    "injection": {
+      "x": 0,
+      "n": 15,
+      "lo": 0,
+      "hi": 0.21801936091053403
+    },
+    "retried": {
+      "x": 0,
+      "n": 39,
+      "lo": 0,
+      "hi": 0.09025110096033431
+    }
+  },
+  "gas": {
+    "local": {
+      "repeatedOps": 8,
+      "identical": 8,
+      "singleOps": 4
+    },
+    "testnet": {
+      "repeatedOps": 5,
+      "identical": 5,
+      "singleOps": 4
+    }
+  }
+}

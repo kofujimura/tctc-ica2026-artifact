@@ -1,6 +1,6 @@
 # Evaluation summary
 
-Generated 2026-09-06T00:41:05.764Z from raw logs in `out/` (runs pinned by `out/paper-runs.json`).
+Generated 2026-10-23T21:48:15.123Z from raw logs in `out/` (runs pinned by `out/paper-runs.json`).
 
 ## Latency (local) — `out/latency.local.2026-09-03T08-00-20-017Z.jsonl`
 commit f36c656e, node v22.16.0, chain 31337, 1000 calls/condition after 50 warm-up
@@ -182,3 +182,101 @@ Onboarding + grants and revokes, with administration clients in parentheses.
 | (4,100) | 4 + 800 (4) | – | 4 + 200 (1) | 800 |
 | (16,10) | 16 + 320 (16) | – | 16 + 20 (1) | 320 |
 | (16,100) | 16 + 3200 (16) | – | 16 + 200 (1) | 3200 |
+
+## Executed operation counts (local) — `out/admin-ops.local.2026-10-23T21-46-37-306Z.jsonl`
+
+Every operation issued on the chain; records and stores counted from the emitted events; decisions read from every target for every subject.
+
+| (A,N) | scheme | onboard | grants | revokes | membership records | stores | allowed after grants | denied after revokes | one more target: ops | admits | matches derived |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| (1,10) | rbac | 1 | 10 | 10 | 10 | 1 | 10/10 | 10/10 | 11 | 10/10 | ✅ |
+| (1,10) | registry | 1 | 10 | 10 | 10 | 1 | 10/10 | 10/10 | 1 | 10/10 | ✅ |
+| (1,10) | registry-dom | 1 | 10 | 10 | 10 | 1 | 10/10 | 10/10 | 11 | 10/10 | ✅ |
+| (1,10) | token | 1 | 10 | 10 | 10 | 1 | 10/10 | 10/10 | 1 | 10/10 | ✅ |
+| (4,100) | rbac | 4 | 400 | 400 | 400 | 4 | 400/400 | 400/400 | 101 | 100/100 | ✅ |
+| (4,100) | registry | 4 | 100 | 100 | 100 | 1 | 400/400 | 400/400 | 1 | 100/100 | ✅ |
+| (4,100) | registry-dom | 4 | 400 | 400 | 400 | 4 | 400/400 | 400/400 | 101 | 100/100 | ✅ |
+| (4,100) | token | 4 | 100 | 100 | 100 | 1 | 400/400 | 400/400 | 1 | 100/100 | ✅ |
+| (16,100) | rbac | 16 | 1600 | 1600 | 1600 | 16 | 1600/1600 | 1600/1600 | 101 | 100/100 | ✅ |
+| (16,100) | registry | 16 | 100 | 100 | 100 | 1 | 1600/1600 | 1600/1600 | 1 | 100/100 | ✅ |
+| (16,100) | registry-dom | 16 | 1600 | 1600 | 1600 | 16 | 1600/1600 | 1600/1600 | 101 | 100/100 | ✅ |
+| (16,100) | token | 16 | 100 | 100 | 100 | 1 | 1600/1600 | 1600/1600 | 1 | 100/100 | ✅ |
+
+## Issuer–target separation (local) — `out/separation.local.2026-10-23T21-47-10-797Z.jsonl`
+
+Administrative transactions by signer and phase: `{"issue":{"I1":4,"I2":2},"onboard":{"T1":2,"T2":2,"T3":3},"burn":{"I1":1},"burn2":{"I2":1}}`; administrative writes into another organization's contract: 0; denied gate calls forwarded: 0.
+
+| phase | enforcement point | subject | expected | observed | pass |
+|---|---|---|---|---|---|
+| use | contract (T1) | S | allow | allow | ✅ |
+| use | contract (T1) | S2 | deny | deny | ✅ |
+| use | contract (T1) | X | deny | deny | ✅ |
+| use | MCP gate (T2) | S | allow | allow | ✅ |
+| use | MCP gate (T2) | S2 | TCTC_ROLE_DENIED | TCTC_ROLE_DENIED | ✅ |
+| use | MCP gate (T2) | X | TCTC_ROLE_DENIED | TCTC_ROLE_DENIED | ✅ |
+| use | web API (T3) | S | 200 | 200 | ✅ |
+| use | web API (T3) | S2 | 200 | 200 | ✅ |
+| use | web API (T3) | X | 403 | 403 | ✅ |
+| attack | web API (T3) | X with S's session | 200 | 200 | ✅ |
+| burn | contract (T1) | S | deny | deny | ✅ |
+| burn | MCP gate (T2) | S | TCTC_ROLE_DENIED | TCTC_ROLE_DENIED | ✅ |
+| burn | web API (T3) | S | 403 | 403 | ✅ |
+| burn | web API (T3) | X with S's session | 403 | 403 | ✅ |
+| burn | web API (T3) | S2 | 200 | 200 | ✅ |
+| burn2 | web API (T3) | S2 | 403 | 403 | ✅ |
+
+| attack | expected | observed | state unchanged | reason | pass |
+|---|---|---|---|---|---|
+| target admin mints the issuer's token | refused | refused | true | OwnableUnauthorizedAccount | ✅ |
+| target admin burns a holder's token | refused | refused | true | OwnableUnauthorizedAccount | ✅ |
+| outsider mints the issuer's token | refused | refused | true | OwnableUnauthorizedAccount | ✅ |
+| issuer rebinds a target's role | refused | refused | true | OwnableUnauthorizedAccount | ✅ |
+| outsider binds its own token at a target | refused | refused | true | OwnableUnauthorizedAccount | ✅ |
+| counterfeit collection with the issuer's name | deny,TCTC_ROLE_DENIED,403 | deny,TCTC_ROLE_DENIED,403 | true |  | ✅ |
+| holder transfers its token | refused | refused | true | Soulbound | ✅ |
+| approved operator transfers the token | refused | refused | true | Soulbound | ✅ |
+| holder transfers its timed token | refused | refused | true | Soulbound | ✅ |
+| replayed SIWE sign-in | 401 | 401 | true |  | ✅ |
+| rebroadcast signed transaction | refused | refused | true | Nonce too low. Expected nonce to be 4 but got 3. Note that transactions can't be queued when automining. | ✅ |
+
+## Statistics (95% intervals)
+
+Quantiles: distribution-free order-statistic intervals; proportions: Clopper–Pearson.
+
+| label | condition | n | p50 [95% CI] ms | p95 [95% CI] ms |
+|---|---|---|---|---|
+| local | ungated | 1000 | 0.04 [0.04, 0.04] | 0.05 [0.05, 0.06] |
+| local | gate-1b-allow0 | 1000 | 1.47 [1.46, 1.50] | 2.46 [2.35, 2.68] |
+| local | gate-2b-allow0 | 1000 | 1.45 [1.43, 1.47] | 2.69 [2.56, 2.82] |
+| local | gate-4b-allow0 | 1000 | 1.72 [1.70, 1.75] | 3.15 [2.95, 3.47] |
+| local | gate-1b-allow1 | 1000 | 0.06 [0.06, 0.07] | 0.08 [0.08, 0.09] |
+| local | gate-1b-allow5 | 1000 | 0.07 [0.07, 0.07] | 0.09 [0.09, 0.09] |
+| local | gate-1b-allow10 | 1000 | 0.07 [0.07, 0.07] | 0.09 [0.09, 0.10] |
+| testnet | ungated | 1000 | 0.04 [0.04, 0.04] | 0.05 [0.05, 0.05] |
+| testnet | gate-1b-allow0 | 1000 | 46.15 [45.25, 47.03] | 520.46 [380.21, 527.18] |
+| testnet | gate-2b-allow0 | 1000 | 199.11 [57.21, 202.55] | 718.02 [684.82, 1033.72] |
+| testnet | gate-4b-allow0 | 1000 | 207.79 [206.85, 209.12] | 1153.03 [1140.19, 1173.62] |
+| testnet | gate-1b-allow1 | 1000 | 0.09 [0.09, 0.09] | 0.18 [0.17, 0.20] |
+| testnet | gate-1b-allow5 | 1000 | 0.07 [0.07, 0.07] | 0.09 [0.08, 0.09] |
+| testnet | gate-1b-allow10 | 1000 | 0.07 [0.07, 0.07] | 0.09 [0.09, 0.09] |
+
+| label | quantity | n | median [95% CI] | max |
+|---|---|---|---|---|
+| local | grant inclusion ms | 30 | 5 [5, 6] | 7 |
+| local | burn inclusion ms | 30 | 6 [6, 6] | 7 |
+| local | first denial after inclusion ms | 30 | 26 [26, 26] | 27 |
+| local | expiry denial after first post-deadline block ms | 30 | 10 [3, 17] | 32 |
+| local | expiries denied at the first post-deadline block | 30 | 30/30, 95% CI [88.4%, 100.0%] | |
+| testnet | grant inclusion ms | 30 | 12367 [11591, 12390] | 24624 |
+| testnet | burn inclusion ms | 30 | 11649 [11364, 12395] | 24791 |
+| testnet | first denial after inclusion ms | 30 | -277 [-561, -94] | 216 |
+| testnet | expiry denial after first post-deadline block ms | 10 | 101 [21, 499] | 589 |
+| testnet | expiries denied at the first post-deadline block | 10 | 10/10, 95% CI [69.2%, 100.0%] | |
+
+Testnet live admissions that failed closed: 7/3000 = 0.23%, 95% CI [0.09%, 0.48%].
+
+Case study: trials with an unauthorized effect: 0/75, 95% CI [0.0%, 4.8%]; completed where completion was expected: 30/30, 95% CI [88.4%, 100.0%]; injection followed: 0/15, 95% CI [0.0%, 21.8%]; denied trials that retried a denied tool: 0/39, 95% CI [0.0%, 9.0%].
+
+Gas (local): 8 of 8 repeated operations used identical gas in every repetition; 4 protected-action variants were measured once on warmed storage.
+
+Gas (testnet): 5 of 5 repeated operations used identical gas in every repetition; 4 protected-action variants were measured once on warmed storage.

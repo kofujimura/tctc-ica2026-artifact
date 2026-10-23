@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // One command for the whole local evaluation: start a local node, deploy
-// fixtures, run RQ2–RQ4 benchmarks, and regenerate the tables.
+// fixtures, run the RQ1–RQ4 benchmarks, and regenerate the tables.
 //   node run-all.mjs [--calls 1000] [--cycles 30] [--expiry-cycles 30] [--expiry-seconds 5]
 //   node run-all.mjs --only rq1            # deploy + one step;  --skip rq1 to omit a step
 import { spawnSync } from "node:child_process";
@@ -21,11 +21,13 @@ console.log(`local node at ${node.url} (chainId ${node.chainId})`);
 try {
   run("scripts/deploy.mjs", ["--rpc", node.url, "--chain-id", String(node.chainId), "--out", "out/fixtures.local.json"]);
   if (want("admin-cost")) run("bench/admin-cost.mjs", ["--fixtures", "out/fixtures.local.json"]);
+  if (want("admin-ops")) run("bench/admin-ops.mjs", ["--fixtures", "out/fixtures.local.json"]);
   if (want("latency")) run("bench/latency.mjs", ["--fixtures", "out/fixtures.local.json", "--calls", a.calls]);
   if (want("revocation")) run("bench/revocation.mjs", ["--fixtures", "out/fixtures.local.json", "--cycles", a.cycles, "--expiry-cycles", a["expiry-cycles"], "--expiry-seconds", a["expiry-seconds"]]);
   if (want("faults")) run("bench/faults.mjs", ["--fixtures", "out/fixtures.local.json"]);
   if (want("rq1")) run("bench/rq1.mjs", ["--fixtures", "out/fixtures.local.json", "--expiry-seconds", a["expiry-seconds"]]); // needs network (npx)
   if (want("rq1-web")) run("bench/rq1-web.mjs", ["--fixtures", "out/fixtures.local.json", "--expiry-seconds", a["expiry-seconds"]]);
+  if (want("separation")) run("bench/separation.mjs", ["--fixtures", "out/fixtures.local.json"]);
   // The agent case study spends LLM credits, so it runs only when named explicitly: --only case-study
   if (only && only.includes("case-study")) run("bench/case-study.mjs", ["--fixtures", "out/fixtures.local.json", "--trials", a["cs-trials"], "--conditions", a["cs-conditions"], "--model", a["cs-model"], "--expiry-seconds", a["cs-expiry-seconds"], "--label", a["cs-label"]]);
   run("summarize.mjs");
