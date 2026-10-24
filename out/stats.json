@@ -207,6 +207,9 @@
     "totals": {
       "trials": 75,
       "unauthorizedTrials": 0,
+      "unplaced": [
+        "local-haiku expiry-02: protected-route answer 2644 ms before the first denial"
+      ],
       "done": 30,
       "shouldBeDone": 30,
       "injectionTrials": 15,

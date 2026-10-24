@@ -6,6 +6,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { readJsonl, stats } from "./lib/jsonl.mjs";
 import { quantileCI, clopperPearson } from "./lib/ci.mjs";
+import { trialSafety } from "./lib/case-safety.mjs";
 
 const texPath = process.argv[2] ?? "../../Paper/main.tex";
 const tex = readFileSync(texPath, "utf8");
@@ -84,14 +85,15 @@ if (found("testnet fail-closed sentence", fc)) { const words = { one: 1, two: 2,
 // ---- Table V: case study ----
 const cs = (label) => load("case-study", label).filter((r) => r.type === "trial" && !r.error);
 const condName = { "granted": "granted", "no grant": "denied", "burn": "burn", "expiry": "expiry", "injection": "injection" };
-for (const m of tex.matchAll(/^(granted|no grant|burn|expiry|injection|all five)\s*&\s*([AB])\s*&\s*(\d+)\/(\d+)\s*&\s*(?:\d+\s*&\s*)?([\d.]+)\s*&\s*(\d+)\/(\d+)\s*&\s*(\d+)\/(\d+)\s*&\s*(\d+)\/(\d+)/gm)) {
-  const [, cond, model, done, n, calls, ga_, gd, w2, w4, co, cr] = m;
+for (const m of tex.matchAll(/^(granted|no grant|burn|expiry|injection|all five)\s*&\s*([AB])\s*&\s*(\d+)\/(\d+)\s*&\s*(?:\d+\s*&\s*)?([\d.]+)\s*&\s*(\d+)\/(\d+)\s*&\s*(\d+)\/(\d+)\s*&\s*(\d+)\/(\d+)\s*&\s*(\d+)\s*\\\\/gm)) {
+  const [, cond, model, done, n, calls, ga_, gd, w2, w4, co, cr, ue] = m;
   const rows = cs(model === "A" ? "local" : "local-haiku").filter((r) => cond === "all five" || r.condition === condName[cond]);
   const sum = (k) => rows.reduce((a, r) => a + (r[k] ?? 0), 0);
   const tag = `case ${cond} ${model}`;
   check(`${tag} n`, Number(n), rows.length); check(`${tag} done`, Number(done), rows.filter((r) => r.success).length);
   check(`${tag} calls`, Number(calls), Number((sum("toolCalls") / rows.length).toFixed(1)), 0.05);
   check(`${tag} gate`, `${ga_}/${gd}`, `${sum("gateAllows")}/${sum("gateDenies")}`); check(`${tag} web`, `${w2}/${w4}`, `${sum("web200")}/${sum("web403")}`); check(`${tag} chain`, `${co}/${cr}`, `${sum("chainRecorded")}/${sum("chainReverted")}`);
+  check(`${tag} unauthorized effects`, Number(ue), rows.reduce((a, r) => a + trialSafety("out", r).effects.length, 0));
 }
 // ---- 95% intervals quoted in the prose (lib/ci.mjs) ----
 const callsOf = (label, cond) => load("latency", label).filter((r) => r.type === "call" && r.condition === cond).map((r) => r.ms);
@@ -138,8 +140,10 @@ propCI("testnet expiries at first block", /post-deadline block \(95\\% CI (\d+)-
   const m2 = flat.match(/followed in none\s+of (\d+) trials \(95\\% CI 0--(\d+)\\%/);
   if (found("case injection sentence", m2)) { check("case: injection trials", Number(m2[1]), inj.length); check("case: injection followed", 0, inj.filter((r) => r.injectedAttempts > 0 || r.approvedFileCreated).length);
     check("case: injection CI hi %", Number(m2[2]), Math.round(100 * clopperPearson(0, inj.length).hi), 0.5); }
-  const m3 = flat.match(/0 of (\d+) trials had an unauthorized\s+effect \(95\\% CI 0--([\d.]+)\\%\)/);
-  if (m3) { check("case: trials", Number(m3[1]), all.length); check("case: unauthorized CI hi %", Number(m3[2]), Number((100 * clopperPearson(0, all.length).hi).toFixed(1)), 0.05); }
+  const m3 = flat.match(/(\d+) of (\d+) trials had an unauthorized\s+effect \(95\\% CI ([\d.]+)--([\d.]+)\\%\)/);
+  if (m3) { const k = all.filter((r) => trialSafety("out", r).effects.length).length, ci = clopperPearson(k, all.length);
+    check("case: trials with an unauthorized effect", Number(m3[1]), k); check("case: trials", Number(m3[2]), all.length);
+    check("case: unauthorized CI lo %", Number(m3[3]), Number((100 * ci.lo).toFixed(1)), 0.05); check("case: unauthorized CI hi %", Number(m3[4]), Number((100 * ci.hi).toFixed(1)), 0.05); }
   else check("case unauthorized sentence (quoted)", "present", "missing");
 }
 // ---- Table II: executed operation counts (admin-ops) ----
