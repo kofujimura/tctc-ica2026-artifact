@@ -11,7 +11,7 @@
 import { mkdtempSync, writeFileSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseArgs, runMeta, write, sleep, artifact, EXP_ROOT } from "../lib/chain.mjs";
+import { parseArgs, runMeta, write, sleep, artifact, MCP_BIN, STARTER_DIR } from "../lib/chain.mjs";
 import { loadFixtures } from "../lib/fixtures.mjs";
 import { StdioClient } from "../lib/stdio-client.mjs";
 import { jsonlWriter, stamp } from "../lib/jsonl.mjs";
@@ -24,7 +24,6 @@ const w = jsonlWriter(out);
 w({ type: "meta", kind: "rq1-web", label, ...runMeta({ fixtures: a.fixtures, rpcUrl: f.rpcUrl, chainId: f.chainId }) });
 console.log(`RQ1 web API → ${out}`);
 
-const MCP_BIN = join(EXP_ROOT, "..", "dist", "index.js");
 const ctAbi = artifact("AgentControlTokens").abi, expAbi = artifact("ExpiringControlTokens").abi;
 const pollingInterval = f.chainId === 31337 ? 50 : 1000;
 const expirySeconds = Number(a["expiry-seconds"]);
@@ -86,7 +85,7 @@ await c2.close();
 if (!(await held())) await grant(); // restore for other experiments
 
 // Source-level cost of the starter, counted from the repository.
-const starter = join(EXP_ROOT, "..", "..", "tctc-openai-starter");
+const starter = STARTER_DIR;
 const countLines = (p) => { try { return readFileSync(join(starter, p), "utf8").split("\n").length; } catch { return null; } };
 const authLines = (countLines("src/lib/auth.ts") ?? 0) + (countLines("src/lib/session.ts") ?? 0);
 const row = {

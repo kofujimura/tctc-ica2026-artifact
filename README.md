@@ -1,12 +1,24 @@
-# Evaluation harness
+# tctc-ica2026-artifact
 
-Reproducible measurements for the paper *Grant Once, Revoke Everywhere:
-Cross-Application AI Agent Authorization via On-Chain Credentials*.
+Evaluation harness, pinned logs and check script for the IEEE ICA 2026 paper
+*Grant Once, Revoke Everywhere: Cross-Application AI Agent Authorization via
+On-Chain Credentials*.
 
-Everything runs against the `tctc-gate` and `tctc-mcp` builds in this
-repository, driven through a real stdio MCP client. One command starts a
-local chain, deploys the fixtures, runs the benchmarks and regenerates every
-table in the paper from the raw logs.
+The evaluated code is not part of this repository. It is pinned as git
+submodules under `vendor/`:
+
+| Submodule | Commit | What the harness uses |
+|---|---|---|
+| [`tctc-mcp`](https://github.com/kofujimura/tctc-mcp) | `f36c656` | the role service (`dist/`) and the gateway `tctc-gate` (`gate/dist/`) |
+| [`tctc-openai-starter`](https://github.com/kofujimura/tctc-openai-starter) | `0c610dc` | source line counts for the web route (RQ1) |
+
+Everything runs against those builds, driven through a real stdio MCP
+client. One command starts a local chain, deploys the fixtures, runs the
+benchmarks and regenerates every table in the paper from the raw logs. Each
+log records the tctc-mcp commit it ran against (`tctcMcpCommit`).
+
+This repository is a frozen record of the evaluation; development of the
+packages themselves continues in their own repositories.
 
 ## What it measures
 
@@ -27,15 +39,16 @@ Requires Node.js 20+ and **Hardhat 2** — installing `hardhat` without a
 version pulls in 3.x, which does not read `hardhat.config.cjs`.
 
 ```sh
-# from the repository root
-npm ci && npm run build && (cd gate && npm run build)
-cd experiments && npm install && npm run compile
+git clone --recurse-submodules https://github.com/kofujimura/tctc-ica2026-artifact.git
+cd tctc-ica2026-artifact
+(cd vendor/tctc-mcp && npm ci && npm run build && npm run build:gate)
+npm ci && npm run compile
 
 node run-all.mjs            # local chain, ~10-15 min
 node summarize.mjs          # regenerate out/summary.md, latency.csv, tables.tex
 ```
 
-Against a public testnet, put funded keys in `experiments/.env.local`
+Against a public testnet, put funded keys in `.env.local`
 (`ISSUER_PRIVATE_KEY`, `SUBJECT_PRIVATE_KEY`, `SUBJECT2_PRIVATE_KEY`, and
 optionally `ALCHEMY_API_KEY` or `RPC`) and run `node run-testnet.mjs`. The
 fixtures are deployed once and reused; keys never enter a fixture file and
@@ -57,9 +70,11 @@ node verify-paper.mjs path/to/main.tex
 It re-derives every figure quoted in the evaluation section from the pinned
 JSONL and fails on any mismatch. `summarize.mjs` also writes `out/stats.json`:
 order-statistic 95% intervals for latency and propagation quantiles and
-Clopper–Pearson intervals for the proportions (`lib/ci.mjs`). `node make-anon-artifact.mjs` builds a
-supplementary package with user names, home paths, e-mail addresses and RPC
-keys removed.
+Clopper–Pearson intervals for the proportions (`lib/ci.mjs`).
+
+Git tags mark the states the paper went through: `ica-2026-abstract-submitted`
+(abstract registration) and `cr-phase1-long` (camera-ready revision, before
+it was fitted to six pages).
 
 ## Layout
 
@@ -71,4 +86,5 @@ contracts/   fixtures: ERC-7303 targets, control tokens, and the
              AccessControl and AccessManager baselines
 scripts/     deployment
 out/         raw JSONL logs, regenerated summaries, pinned-run manifest
+vendor/      the evaluated code (git submodules)
 ```

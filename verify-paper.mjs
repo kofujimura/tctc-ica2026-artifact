@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 // Check that the numbers printed in the paper match the pinned runs
 // (out/paper-runs.json). Exits non-zero on any mismatch.
-//   node verify-paper.mjs ../../../Paper/main.tex
+//   node verify-paper.mjs path/to/main.tex
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { readJsonl, stats } from "./lib/jsonl.mjs";
 import { quantileCI, clopperPearson } from "./lib/ci.mjs";
 
-const texPath = process.argv[2] ?? "../../../Paper/main.tex";
+const texPath = process.argv[2] ?? "../../Paper/main.tex";
 const tex = readFileSync(texPath, "utf8");
 const runs = JSON.parse(readFileSync("out/paper-runs.json", "utf8")).runs;
 const load = (kind, label) => readJsonl(join("out", runs[kind][label]));

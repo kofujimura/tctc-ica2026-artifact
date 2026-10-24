@@ -20,7 +20,7 @@ import { join } from "node:path";
 import { toHex, encodeFunctionData } from "viem";
 import { mnemonicToAccount } from "viem/accounts";
 import { createSiweMessage } from "viem/siwe";
-import { parseArgs, runMeta, clients, deploy, artifact, META_NS, EXP_ROOT } from "../lib/chain.mjs";
+import { parseArgs, runMeta, clients, deploy, artifact, META_NS, EXP_ROOT, MCP_BIN } from "../lib/chain.mjs";
 import { loadFixtures } from "../lib/fixtures.mjs";
 import { gateConfig, startGate } from "../lib/gate.mjs";
 import { jsonlWriter, stamp } from "../lib/jsonl.mjs";
@@ -41,7 +41,6 @@ const ORGS = ["I1", "I2", "T1", "T2", "T3", "S", "S2", "X"];
 const acct = Object.fromEntries(ORGS.map((n, k) => [n, clients(f.rpcUrl, f.chainId, keyAt(3 + k))]));
 for (const n of ORGS) w({ type: "account", name: n, address: acct[n].address });
 const ctAbi = artifact("AgentControlTokens").abi, etAbi = artifact("ExpiringControlTokens").abi, btAbi = artifact("BindableTarget").abi;
-const MCP_BIN = join(EXP_ROOT, "..", "dist", "index.js");
 
 let phase = "issue";
 const revertReason = (e) => {

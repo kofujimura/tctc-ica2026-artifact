@@ -1,0 +1,6 @@
+[submodule "vendor/tctc-mcp"]
+	path = vendor/tctc-mcp
+	url = https://github.com/kofujimura/tctc-mcp.git
+[submodule "vendor/tctc-openai-starter"]
+	path = vendor/tctc-openai-starter
+	url = https://github.com/kofujimura/tctc-openai-starter.git

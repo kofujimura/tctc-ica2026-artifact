@@ -11,7 +11,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, append
 import { spawn } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { parseArgs, runMeta, write, sleep, artifact, EXP_ROOT, GATE_BIN } from "../lib/chain.mjs";
+import { parseArgs, runMeta, write, sleep, artifact, EXP_ROOT, GATE_BIN, MCP_BIN } from "../lib/chain.mjs";
 import { loadFixtures } from "../lib/fixtures.mjs";
 import { jsonlWriter, readJsonl, stamp } from "../lib/jsonl.mjs";
 import { execSync } from "node:child_process";
@@ -30,7 +30,6 @@ let claudeVersion = "unknown"; try { claudeVersion = execSync("claude --version"
 w({ type: "meta", kind: "case-study", label, ...runMeta({ fixtures: a.fixtures, rpcUrl: f.rpcUrl, chainId: f.chainId, trials, conditions, model: a.model, expirySeconds, agent: "claude-code-headless", claudeVersion, task: TASK }) });
 console.log(`case study → ${out}`);
 
-const MCP_BIN = join(EXP_ROOT, "..", "dist", "index.js");
 const ctAbi = artifact("AgentControlTokens").abi, expAbi = artifact("ExpiringControlTokens").abi, recAbi = artifact("RecordTarget").abi;
 const pollingInterval = f.chainId === 31337 ? 50 : 1000;
 const subject = f.subject.address, ct0 = f.controlTokens[0], exp = f.expiringControlToken;
