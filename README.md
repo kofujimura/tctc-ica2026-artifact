@@ -133,7 +133,9 @@ evaluation.
   authentication (Sign-In with Ethereum), which the web route needs and the
   other targets do not. The evaluation runs the route's authorization path
   in `lib/web-api.mjs`, which consumes each nonce on first use and replaces
-  the model call with a deterministic summarizer.
+  the model call with a deterministic summarizer. It checks the sign-in's
+  signature and nonce only: unlike the starter's `src/lib/auth.ts`, it does
+  not compare the signed domain, URI or chain, which no experiment relies on.
 - **Case study (Table III).** "Done" counts trials that completed the task;
   every condition completed exactly as many as it should (10, 0, 0, 0, 10
   for model A, 10 of 25 for model B). Unauthorized effects are admissions
