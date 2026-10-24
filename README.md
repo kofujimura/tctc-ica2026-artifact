@@ -76,6 +76,75 @@ JSONL and fails on any mismatch. `summarize.mjs` also writes `out/stats.json`:
 order-statistic 95% intervals for latency and propagation quantiles and
 Clopper–Pearson intervals for the proportions (`lib/ci.mjs`).
 
+A sentence or table row that a check expects but cannot find counts as a
+mismatch, so rewording the paper cannot silently drop a check.
+
+## Setup details the paper leaves out
+
+The six-page paper cites this repository for the following details of the
+evaluation.
+
+- **Chains.** The local node mines each transaction on arrival and seals an
+  empty block every second, so that time advances for expiry. The public
+  testnet is Sepolia, reached through a hosted JSON-RPC endpoint.
+- **Gas (RQ2).** Measured on the local node with storage already warmed.
+  Gas is deterministic for a given state: every grant, revoke and baseline
+  action used identical gas in all five repetitions, and each protected
+  action under token bindings was measured once.
+- **Latency (RQ3).** Each condition runs 1,000 back-to-back calls after
+  warm-up, so a cached condition measures the hit path with one refresh per
+  cache lifetime. The 1 s and 10 s allow caches give the same 0.07 ms
+  median as the 5 s cache in the table. A live admission makes 3, 4 or 6
+  RPC requests for 1, 2 or 4 bindings; requests above those on the testnet
+  are transport retries.
+- **Propagation (RQ3).** `out/stats.json` holds the 95% intervals of every
+  median, including those the paper no longer quotes: first denial after
+  inclusion on the local node (26–26 ms) and first denial after the
+  post-deadline block (3–17 ms local, 21–499 ms testnet).
+- **Faults (RQ4).** The stale-deny-cache scenario needs a deny cache longer
+  than block inclusion; with a 5 s cache on a 12 s chain the cached deny
+  expires before the grant lands and the gateway simply re-reads. In the
+  race, how many racing calls are admitted before the burn lands is a
+  property of block time, not of the enforcement point.
+- **Authority-boundary attacks (RQ4, `bench/separation.mjs`).** Mint and burn
+  by anyone but the issuer, and rebinding a target's role by anyone but its
+  owner, revert with `OwnableUnauthorizedAccount`. A counterfeit collection
+  deployed under `I1`'s name and minted to the attacker is denied by all
+  three targets, since a binding names a contract address. Transfers of a
+  delegation token by its holder or an approved operator, and of a timed
+  token, revert with `Soulbound`. A replayed sign-in gets 401 because the
+  server consumed its nonce, and a rebroadcast signed transaction is
+  rejected by the account nonce and executes once.
+- **Issuer–target separation (RQ1).** Transactions signed by each
+  organization, by phase (issue: token contracts deployed and tokens
+  minted; onboard: target deployed and role bound):
+
+  | Organization | Issue | Onboard | Revoke |
+  |---|---|---|---|
+  | Issuer I1 | 4 | 0 | 1 |
+  | Issuer I2 | 2 | 0 | 1 |
+  | T1, contract action | 0 | 2 | 0 |
+  | T2, MCP gateway | 0 | 2 | 0 |
+  | T3, web API | 0 | 3 | 0 |
+
+  `I1`'s four issuing transactions include the timed token used by the
+  attack scenarios.
+- **Web route.** The eight lines of target code exclude subject
+  authentication (Sign-In with Ethereum), which the web route needs and the
+  other targets do not. The evaluation runs the route's authorization path
+  in `lib/web-api.mjs`, which consumes each nonce on first use and replaces
+  the model call with a deterministic summarizer.
+- **Case study (Table III).** "Done" counts trials that completed the task;
+  every condition completed exactly as many as it should (10, 0, 0, 0, 10
+  for model A, 10 of 25 for model B). Unauthorized effects are admissions
+  pinned at or after the burn block, protected-route answers or on-chain
+  records without the role, and files created.
+- **Gateway.** Binding discovery is cached for 60 s, tools the principal
+  declares public are forwarded unchecked, a call cancelled during its check
+  is neither forwarded nor answered, and the gateway refuses to serve if the
+  endpoint reports another chain. `docs/GATE_SPEC.md` in `tctc-mcp`
+  specifies the admission procedure in full.
+
 Git tags mark the states the paper went through: `ica-2026-abstract-submitted`
 (abstract registration) and `cr-phase1-long` (camera-ready revision, before
 it was fitted to six pages).
