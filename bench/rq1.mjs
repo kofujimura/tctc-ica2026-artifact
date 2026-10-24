@@ -6,8 +6,8 @@
 //   - smart-contract action: BenchTarget.act() (on-chain PEP)
 //   - three independently packaged MCP servers wrapped by tctc-gate, unmodified
 //     (@modelcontextprotocol/server-everything, server-memory, server-filesystem)
-// The web-API starter (SIWE + role check) is exercised manually; its row is
-// documented from source.
+// The web route's row comes from bench/rq1-web.mjs, which reads the role
+// service's verdict under the route's configuration.
 import { mkdtempSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";

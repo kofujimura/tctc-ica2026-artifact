@@ -28,7 +28,7 @@ packages themselves continues in their own repositories.
 
 | Script | Question | Output |
 |---|---|---|
-| `bench/rq1.mjs`, `bench/rq1-web.mjs` | Does one token type serve heterogeneous enforcement points? | grant / use / revoke / expiry against a contract, three unmodified npm MCP servers behind the gateway, and a SIWE-authenticated web route |
+| `bench/rq1.mjs`, `bench/rq1-web.mjs` | Does one token type serve heterogeneous enforcement points? | grant / use / revoke / expiry against a contract, three unmodified npm MCP servers behind the gateway, and the web route's role decision (no HTTP or sign-in) |
 | `bench/separation.mjs` | Does it hold when issuer and targets are different organizations? | two issuers and three target organizations on separate keys: who signed what, eleven authority-boundary attacks, and each issuer's burn (local only) |
 | `bench/admin-cost.mjs` | What does administration cost? | operation counts and gas for per-target RBAC (`AccessControl`), a shared registry (`AccessManager`) and externalized tokens |
 | `bench/admin-ops.mjs` | Do the operation counts hold when executed? | every grant, revoke and onboarding issued on chain, with membership records counted from events and every target's decision read back, including a registry per administrative domain (local only) |
@@ -131,9 +131,12 @@ evaluation.
   attack scenarios.
 - **Web route.** The eight lines of target code exclude subject
   authentication (Sign-In with Ethereum), which the web route needs and the
-  other targets do not. The evaluation runs the route's authorization path
-  in `lib/web-api.mjs`, which consumes each nonce on first use and replaces
-  the model call with a deterministic summarizer. It checks the sign-in's
+  other targets do not. `bench/rq1-web.mjs` takes the role service's answer
+  under the route's configuration as the route's verdict, without HTTP or
+  sign-in. The separation run and the case study send signed-in HTTP
+  requests to `lib/web-api.mjs`, on the local node only; that server consumes
+  each nonce on first use and replaces the model call with a deterministic
+  summarizer. It checks the sign-in's
   signature and nonce only: unlike the starter's `src/lib/auth.ts`, it does
   not compare the signed domain, URI or chain, which no experiment relies on.
 - **Case study (Table III).** "Done" counts trials that completed the task;
