@@ -17,6 +17,10 @@ client. One command starts a local chain, deploys the fixtures, runs the
 benchmarks and regenerates every table in the paper from the raw logs. Each
 log records the tctc-mcp commit it ran against (`tctcMcpCommit`).
 
+The runtime code of that commit is also released on npm as `tctc-mcp`
+0.3.4 and `tctc-gate` 0.1.1; the releases add tests, documentation and
+version numbers only.
+
 This repository is a frozen record of the evaluation; development of the
 packages themselves continues in their own repositories.
 
@@ -88,3 +92,16 @@ scripts/     deployment
 out/         raw JSONL logs, regenerated summaries, pinned-run manifest
 vendor/      the evaluated code (git submodules)
 ```
+
+## License
+
+Copyright 2026 Ko Fujimura.
+
+- Code (everything outside `out/`): [Apache License 2.0](LICENSE), except
+  where a file's SPDX header names another license
+  (`contracts/AgentControlTokens.sol` and `contracts/ExpiringControlTokens.sol`
+  are MIT).
+- Data (everything under `out/`: the raw logs, case-study transcripts and
+  audit logs, fixtures and the summaries generated from them):
+  [Creative Commons Attribution 4.0 International](LICENSE-DATA).
+- The submodules under `vendor/` carry their own licenses.

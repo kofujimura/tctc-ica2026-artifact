@@ -1,6 +1,7 @@
 {
   "name": "tctc-experiments",
   "private": true,
+  "license": "Apache-2.0",
   "version": "0.1.0",
   "description": "Reproducible evaluation harness for the TCTC / ERC-7303 paper (latency, revocation, expiry, fault injection).",
   "type": "module",
